@@ -1,0 +1,93 @@
+[
+  {
+    "id": "REP-2026-02B4B1",
+    "hazard_type": "crack",
+    "description": "f",
+    "lat": 25.1325,
+    "lon": 93.0422,
+    "location_name": "Dima Hasao Corridor, Assam",
+    "phone_number": null,
+    "photo_url": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?auto=format&fit=crop&w=800&q=80",
+    "status": "actioned",
+    "created_at": "2026-09-09T08:17:18.812378+00:00",
+    "officer_notes": ""
+  },
+  {
+    "id": "REP-2026-47FF7D",
+    "hazard_type": "rockfall",
+    "description": "nothing",
+    "lat": 20.98813,
+    "lon": 77.75726,
+    "location_name": "amravti",
+    "phone_number": "9876543210",
+    "photo_url": "blob:http://127.0.0.1:5173/fb1dcd16-8b5d-4fd5-b406-661d28f77a5d",
+    "status": "reviewed",
+    "created_at": "2026-09-09T07:49:20.498156+00:00",
+    "officer_notes": ""
+  },
+  {
+    "id": "REP-2026-7F65A2",
+    "hazard_type": "crack",
+    "description": "none",
+    "lat": 20.98798,
+    "lon": 77.75719,
+    "location_name": "Dima Hasao Corridor, Assam",
+    "phone_number": "1234567890",
+    "photo_url": "https://images.unsplash.com/photo-1584467735815-f778f274e296?auto=format&fit=crop&w=600&q=80",
+    "status": "pending",
+    "created_at": "2026-09-09T06:46:49.933292+00:00",
+    "officer_notes": null
+  },
+  {
+    "id": "REP-2026-ED2405",
+    "hazard_type": "rockfall",
+    "description": "Test rockfall along Jatinga bypass",
+    "lat": 25.1311,
+    "lon": 93.0411,
+    "location_name": "Jatinga Curve",
+    "phone_number": "+919435012345",
+    "photo_url": "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=600&q=80",
+    "status": "pending",
+    "created_at": "2026-09-09T06:30:54.931221+00:00",
+    "officer_notes": null
+  },
+  {
+    "id": "REP-2026-001",
+    "hazard_type": "crack",
+    "description": "Widening longitudinal tension crack observed across the asphalt near km 71 on Jatinga Hill road. Approximately 4 inches wide and expanding after overnight downpour.",
+    "lat": 25.1325,
+    "lon": 93.0422,
+    "location_name": "Jatinga-Haflong Bypass (NH-27)",
+    "phone_number": "+91 94350 21890",
+    "photo_url": "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=600&q=80",
+    "status": "reviewed",
+    "created_at": "2026-09-08T18:42:00Z",
+    "officer_notes": "SDRF team dispatched for inspection. Traffic redirected to alternate spur."
+  },
+  {
+    "id": "REP-2026-002",
+    "hazard_type": "rockfall",
+    "description": "Large boulders tumbled from upper cutting near Ditokcherra railway station cutting. Blocking drainage ditch and partial single track.",
+    "lat": 25.0845,
+    "lon": 92.9515,
+    "location_name": "Ditokcherra Rail Section",
+    "phone_number": "+91 98540 88210",
+    "photo_url": "https://images.unsplash.com/photo-1508873696983-2df5293cb32f?auto=format&fit=crop&w=600&q=80",
+    "status": "pending",
+    "created_at": "2026-09-09T05:15:00Z",
+    "officer_notes": null
+  },
+  {
+    "id": "REP-2026-003",
+    "hazard_type": "slope_movement",
+    "description": "Continuous mud slurry flow creeping down tea-garden slope near Harangajao market border. Retaining bamboo fence bowed outward.",
+    "lat": 25.118,
+    "lon": 92.8685,
+    "location_name": "Harangajao Lower Basti",
+    "phone_number": "+91 87621 34912",
+    "photo_url": "https://images.unsplash.com/photo-1584467735815-f778f274e296?auto=format&fit=crop&w=600&q=80",
+    "status": "actioned",
+    "created_at": "2026-09-07T14:30:00Z",
+    "officer_notes": "Earthmover cleared ditch; 14 families temporarily sheltered in Harangajao High School."
+  }
+]
