@@ -66,7 +66,7 @@ export default function Navbar() {
           {/* Language Selector */}
           <LanguageSwitcher />
 
-          {currentOfficer ? (
+          {currentOfficer && (
             <div className="flex items-center gap-2">
               <Link
                 to="/officer/map"
@@ -82,22 +82,6 @@ export default function Navbar() {
               >
                 <LogOut className="w-4 h-4" />
               </button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                to="/report"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow-sm transition"
-              >
-                <span>Report Issue</span>
-              </Link>
-              <Link
-                to="/officer/login"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-medium border border-slate-200 dark:border-slate-700 transition"
-              >
-                <User className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
-                <span className="hidden sm:inline">Officer Login</span>
-              </Link>
             </div>
           )}
         </div>

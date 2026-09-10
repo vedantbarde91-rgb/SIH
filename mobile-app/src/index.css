@@ -1,0 +1,58 @@
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased;
+    /* Prevent iOS bounce scroll */
+    overscroll-behavior: contain;
+    /* Account for safe areas (notch, status bar, home indicator) */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Tap highlight color for Android */
+  * {
+    -webkit-tap-highlight-color: rgba(56, 189, 248, 0.2);
+  }
+
+  /* Larger touch targets for mobile — minimum 44px per Apple HIG */
+  button, a, [role="button"] {
+    @apply min-h-[44px];
+  }
+}
+
+/* Custom Leaflet popup styling for dark theme */
+.dark .leaflet-popup-content-wrapper {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid #334155 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.dark .leaflet-popup-tip {
+  background: #1e293b !important;
+  border: 1px solid #334155 !important;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.dark ::-webkit-scrollbar-track { background: #0f172a; }
+.dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+
+/* Mobile bottom navigation safe area */
+.mobile-bottom-nav {
+  padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+}

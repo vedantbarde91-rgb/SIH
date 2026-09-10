@@ -88,19 +88,43 @@ export const apiClient = {
     }
   },
 
-  async fetchReports(status = null) {
-    const url = status ? `${API_BASE}/reports?status=${status}` : `${API_BASE}/reports`;
+  async fetchReports(params = null) {
+    let query = '';
+    if (typeof params === 'string') {
+      query = `?status=${params}`;
+    } else if (params && typeof params === 'object') {
+      const q = new URLSearchParams();
+      if (params.status && params.status !== 'ALL') q.append('status', params.status);
+      if (params.district && params.district !== 'ALL') q.append('district', params.district);
+      if (params.user_id) q.append('user_id', params.user_id);
+      const str = q.toString();
+      if (str) query = `?${str}`;
+    }
+
+    const url = `${API_BASE}/reports${query}`;
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      localStorage.setItem(CACHE_KEYS.REPORTS, JSON.stringify(data));
       return data;
     } catch (err) {
       const cached = localStorage.getItem(CACHE_KEYS.REPORTS);
       if (cached) {
-        const list = JSON.parse(cached);
-        return status ? list.filter((r) => r.status === status) : list;
+        let list = JSON.parse(cached);
+        if (params && typeof params === 'object') {
+          if (params.status && params.status !== 'ALL') {
+            list = list.filter((r) => r.status === params.status);
+          }
+          if (params.district && params.district !== 'ALL') {
+            list = list.filter((r) => (r.district || 'Dima Hasao').toLowerCase() === params.district.toLowerCase());
+          }
+          if (params.user_id) {
+            list = list.filter((r) => r.user_id === params.user_id || r.phone_number === params.user_id);
+          }
+        } else if (typeof params === 'string' && params !== 'ALL') {
+          list = list.filter((r) => r.status === params);
+        }
+        return list;
       }
       return [];
     }

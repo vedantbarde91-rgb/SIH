@@ -7,6 +7,7 @@ import {
   ListFilter,
   BarChart3,
   FileCheck2,
+  History,
   LogOut,
   Building2,
   ArrowUpRight
@@ -28,6 +29,7 @@ export default function Sidebar() {
     { to: '/officer/list', label: t('nav.list_view', 'Villages & Slopes'), icon: ListFilter },
     { to: '/officer/analytics', label: t('nav.analytics', 'Rainfall & Soil Telemetry'), icon: BarChart3 },
     { to: '/officer/reports', label: t('nav.reports_review', 'Citizen Field Reports'), icon: FileCheck2 },
+    { to: '/officer/history', label: t('nav.history', 'Disaster History'), icon: History },
   ];
 
   const handleLogout = () => {

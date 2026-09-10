@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- MOBILE-OPTIMIZED VIEWPORT: user-scalable=no for app-like feel, viewport-fit=cover for notch/status bar -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+    <title>NER-LEWS | Landslide Early Warning</title>
+    <meta name="description" content="AI-Based Landslide Early Warning and Risk Monitoring System for North Eastern Region (NER) of India" />
+
+    <!-- PWA / Mobile Web App Meta Tags -->
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="NER-LEWS" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Prevent iOS text size adjust -->
+    <style>
+      html { -webkit-text-size-adjust: 100%; }
+      /* Prevent pull-to-refresh on Android Chrome */
+      body { overscroll-behavior-y: contain; }
+    </style>
+  </head>
+  <body class="bg-slate-950 text-slate-100">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

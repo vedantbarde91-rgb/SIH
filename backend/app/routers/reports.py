@@ -68,11 +68,22 @@ def save_reports(reports: List[dict]):
         json.dump(reports, f, indent=2)
 
 @router.get("", response_model=List[ReportResponse])
-def get_all_reports(status: Optional[str] = None):
+def get_all_reports(
+    status: Optional[str] = None,
+    district: Optional[str] = None,
+    user_id: Optional[str] = None
+):
     reports = load_reports()
-    if status:
-        return [r for r in reports if r.get("status", "").lower() == status.lower()]
-    return reports
+    results = []
+    for r in reports:
+        if status and r.get("status", "").lower() != status.lower():
+            continue
+        if district and district.upper() != "ALL" and r.get("district", "Dima Hasao").lower() != district.lower():
+            continue
+        if user_id and r.get("user_id") != user_id and r.get("phone_number") != user_id:
+            continue
+        results.append(r)
+    return results
 
 @router.post("", response_model=ReportResponse, status_code=201)
 def create_report(report_data: ReportCreate):
@@ -85,7 +96,9 @@ def create_report(report_data: ReportCreate):
         "lat": report_data.lat,
         "lon": report_data.lon,
         "location_name": report_data.location_name or "Dima Hasao Corridor",
+        "district": report_data.district or "Dima Hasao",
         "phone_number": report_data.phone_number,
+        "user_id": report_data.user_id,
         "photo_url": report_data.photo_url or "https://images.unsplash.com/photo-1541888946425-d0fbb186156f?auto=format&fit=crop&w=600&q=80",
         "status": "pending",
         "created_at": datetime.now(timezone.utc).isoformat(),

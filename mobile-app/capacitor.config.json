@@ -1,0 +1,38 @@
+{
+  "appId": "com.ner.lews",
+  "appName": "NER-LEWS",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "Camera": {
+      "permissions": [
+        "camera",
+        "photos"
+      ]
+    },
+    "Geolocation": {
+      "permissions": [
+        "location"
+      ]
+    },
+    "PushNotifications": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
+    },
+    "StatusBar": {
+      "style": "dark",
+      "backgroundColor": "#0f172a"
+    }
+  },
+  "android": {
+    "buildOptions": {
+      "keystorePath": null,
+      "keystoreAlias": null
+    }
+  }
+}

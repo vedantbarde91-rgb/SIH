@@ -1,0 +1,45 @@
+{
+  "name": "ner-lews-mobile",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "cap:sync": "npx cap sync",
+    "cap:open": "npx cap open android",
+    "cap:run": "npx cap run android",
+    "build:android": "npm run build && npx cap sync android && npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/camera": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/geolocation": "^7.0.0",
+    "@capacitor/haptics": "^7.0.0",
+    "@capacitor/network": "^7.0.0",
+    "@capacitor/push-notifications": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0",
+    "autoprefixer": "^10.5.5",
+    "firebase": "^12.18.0",
+    "i18next": "^26.4.2",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.43.0",
+    "postcss": "^8.5.28",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-i18next": "^17.0.13",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.18.3",
+    "recharts": "^3.10.1",
+    "tailwindcss": "^3.4.19"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "vite": "^8.2.2"
+  }
+}

@@ -8,7 +8,9 @@ class ReportCreate(BaseModel):
     lat: float = Field(..., description="Latitude captured via browser GPS or pin")
     lon: float = Field(..., description="Longitude captured via browser GPS or pin")
     location_name: Optional[str] = Field(default="Dima Hasao Corridor", description="Reported settlement or road stretch")
+    district: Optional[str] = Field(default="Dima Hasao", description="District name for geofenced routing")
     phone_number: Optional[str] = Field(default=None, description="Optional citizen phone number")
+    user_id: Optional[str] = Field(default=None, description="Unique citizen ID or mobile for ownership isolation")
     photo_url: Optional[str] = Field(default=None, description="Uploaded photo URL or base64 data")
 
 class ReportStatusUpdate(BaseModel):

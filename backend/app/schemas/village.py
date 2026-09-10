@@ -23,6 +23,11 @@ class VillageBase(BaseModel):
     risk_band: str
     contributing_factors: List[str]
     suggested_action: str
+    risk_percentage: Optional[float] = None
+    contributing_factors_detailed: Optional[List[dict]] = None
+    weather_forecast: Optional[dict] = None
+    infrastructure_at_risk: Optional[dict] = None
+    historical_landslides: Optional[List[dict]] = None
 
 class VillageDetail(VillageBase):
     monthly_history: List[MonthlyHistory]

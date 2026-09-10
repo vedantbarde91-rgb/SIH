@@ -4,11 +4,14 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Landing from './pages/Landing';
 import ReportForm from './pages/citizen/ReportForm';
+import CitizenAuth from './pages/citizen/CitizenAuth';
+import UserDashboard from './pages/citizen/UserDashboard';
 import OfficerLogin from './pages/officer/Login';
 import MapView from './pages/officer/MapView';
 import ListView from './pages/officer/ListView';
 import Analytics from './pages/officer/Analytics';
 import ReportsReview from './pages/officer/ReportsReview';
+import HistoryView from './pages/officer/HistoryView';
 import { authService } from './firebase/authService';
 
 // Layout wrapper for Officer Portal (Sidebar + Outlet)
@@ -40,8 +43,10 @@ export default function App() {
             {/* Landing Door */}
             <Route path="/" element={<Landing />} />
 
-            {/* Citizen Portal (No Login) */}
+            {/* Citizen Portal (Guest & Logged-in Auth) */}
             <Route path="/report" element={<ReportForm />} />
+            <Route path="/user/auth" element={<CitizenAuth />} />
+            <Route path="/user/dashboard" element={<UserDashboard />} />
 
             {/* Officer Login */}
             <Route path="/officer/login" element={<OfficerLogin />} />
@@ -53,6 +58,7 @@ export default function App() {
               <Route path="list" element={<ListView />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="reports" element={<ReportsReview />} />
+              <Route path="history" element={<HistoryView />} />
             </Route>
 
             {/* Catch-all redirect */}
