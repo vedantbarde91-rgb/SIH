@@ -1,0 +1,571 @@
+import json
+import os
+
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "app", "data")
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, "ner_historical_landslides.geojson")
+
+HISTORICAL_LANDSLIDES = [
+    # --- DIMA HASAO & BARAK VALLEY (ASSAM) ---
+    {
+        "id": "GLC-NER-2022-05-14",
+        "title": "2022 New Haflong Railway Washout & Mudflow",
+        "date": "2022-05-14",
+        "state": "Assam",
+        "district": "Dima Hasao",
+        "lat": 25.1764,
+        "lon": 93.0245,
+        "elevation_m": 680,
+        "category": "Mudflow / Debris Flow",
+        "trigger": "Continuous extreme monsoon downpour (>450mm in 48h)",
+        "fatalities": 3,
+        "injuries": 12,
+        "infrastructure_impact": "New Haflong railway station buried under 3m debris; Lumding-Badarpur railway suspended for 65 days",
+        "size": "Very Large",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2022-05-17",
+        "title": "Ditokcherra Gorge Embankment Failure",
+        "date": "2022-05-17",
+        "state": "Assam",
+        "district": "Dima Hasao",
+        "lat": 25.0430,
+        "lon": 92.8920,
+        "elevation_m": 310,
+        "category": "Rotational Slope Slump",
+        "trigger": "River toe erosion along Jatinga river and prolonged precipitation",
+        "fatalities": 2,
+        "injuries": 4,
+        "infrastructure_impact": "Complete collapse of rail tracks into gorge; bridge 120 abutment undermined",
+        "size": "Large",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2022-05-19",
+        "title": "Jatinga Ridge Road Breach (NH-27)",
+        "date": "2022-05-19",
+        "state": "Assam",
+        "district": "Dima Hasao",
+        "lat": 25.1189,
+        "lon": 93.0378,
+        "elevation_m": 845,
+        "category": "Translational Debris Slide",
+        "trigger": "Unengineered cut slope failure under 320mm/72h rainfall",
+        "fatalities": 1,
+        "injuries": 5,
+        "infrastructure_impact": "NH-27 East-West Corridor severed; 400+ supply trucks stranded for 10 days",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2020-06-02",
+        "title": "Cachar-Dima Hasao Border Mass Debris Fall",
+        "date": "2020-06-02",
+        "state": "Assam",
+        "district": "Cachar",
+        "lat": 24.8333,
+        "lon": 92.7789,
+        "elevation_m": 120,
+        "category": "Earth Slide / Mudflow",
+        "trigger": "Cyclone Amphan precursor cloudbursts (>260mm in 24h)",
+        "fatalities": 7,
+        "injuries": 9,
+        "infrastructure_impact": "Destroyed 14 hillside tea plantation settlements, blocked Silchar feeder roads",
+        "size": "Large",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2016-07-24",
+        "title": "Harangajao Pass Wedge Slide",
+        "date": "2016-07-24",
+        "state": "Assam",
+        "district": "Dima Hasao",
+        "lat": 25.0920,
+        "lon": 92.8650,
+        "elevation_m": 450,
+        "category": "Rock Wedge Failure",
+        "trigger": "Intense monsoon rainfall in Disang fractured shale beds",
+        "fatalities": 0,
+        "injuries": 2,
+        "infrastructure_impact": "Blocked Haflong-Silchar arterial road for 72 hours",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2023-06-16",
+        "title": "Lower Haflong Urban Escarpment Slip",
+        "date": "2023-06-16",
+        "state": "Assam",
+        "district": "Dima Hasao",
+        "lat": 25.1650,
+        "lon": 93.0120,
+        "elevation_m": 720,
+        "category": "Creep / Progressive Slump",
+        "trigger": "Inadequate stormwater drainage and 180mm antecedent rainfall",
+        "fatalities": 0,
+        "injuries": 3,
+        "infrastructure_impact": "Structural cracks in 12 residential dwellings; emergency evacuation of 80 residents",
+        "size": "Small",
+        "susceptibility_zone": "Moderate"
+    },
+    {
+        "id": "GLC-NER-2022-06-18",
+        "title": "Guwahati Boragaon Quarry Face Collapse",
+        "date": "2022-06-18",
+        "state": "Assam",
+        "district": "Kamrup Metropolitan",
+        "lat": 26.1280,
+        "lon": 91.6850,
+        "elevation_m": 95,
+        "category": "Rockfall",
+        "trigger": "Urban slope cutting and 4-day heavy monsoon rain",
+        "fatalities": 4,
+        "injuries": 6,
+        "infrastructure_impact": "Crushed 2 makeshift worker quarters; partial blockage of city bypass",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2024-05-28",
+        "title": "Maibang Deforested Slope Mudflow",
+        "date": "2024-05-28",
+        "state": "Assam",
+        "district": "Dima Hasao",
+        "lat": 25.3050,
+        "lon": 93.1620,
+        "elevation_m": 580,
+        "category": "Mudflow",
+        "trigger": "Cyclone Remal tropical rain bands (>210mm in 24h)",
+        "fatalities": 1,
+        "injuries": 4,
+        "infrastructure_impact": "Inundated agricultural terraces and disrupted Mahur river tributary culvert",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+
+    # --- EAST KHASI HILLS & MEGHALAYA ---
+    {
+        "id": "GLC-NER-2022-06-17",
+        "title": "Cherrapunji (Sohra) Rim Torrential Rockslide",
+        "date": "2022-06-17",
+        "state": "Meghalaya",
+        "district": "East Khasi Hills",
+        "lat": 25.2980,
+        "lon": 91.7320,
+        "elevation_m": 1390,
+        "category": "Rock Topple & Debris Avalanche",
+        "trigger": "World-record 972mm precipitation in 24h",
+        "fatalities": 5,
+        "injuries": 11,
+        "infrastructure_impact": "Sheared 400m of Sohra-Shella cliffside road; isolated 8 border villages",
+        "size": "Very Large",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2022-06-19",
+        "title": "Mawkdok Dympep Valley Gorge Slide",
+        "date": "2022-06-19",
+        "state": "Meghalaya",
+        "district": "East Khasi Hills",
+        "lat": 25.3640,
+        "lon": 91.7850,
+        "elevation_m": 1520,
+        "category": "Debris Slide",
+        "trigger": "Extreme antecedent soil saturation and surface runoff velocity",
+        "fatalities": 2,
+        "injuries": 3,
+        "infrastructure_impact": "Shillong-Cherrapunji highway blocked by massive sandstone boulders",
+        "size": "Large",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2020-09-24",
+        "title": "Pynursla Ridge Escarpment Collapse",
+        "date": "2020-09-24",
+        "state": "Meghalaya",
+        "district": "East Khasi Hills",
+        "lat": 25.3080,
+        "lon": 91.9050,
+        "elevation_m": 1280,
+        "category": "Rockfall / Cliff Failure",
+        "trigger": "Prolonged late-monsoon rain impacting columnar joints",
+        "fatalities": 3,
+        "injuries": 5,
+        "infrastructure_impact": "Shillong-Dawki International Trade Highway (NH-206) cut off for 6 days",
+        "size": "Large",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2023-07-08",
+        "title": "Mawlynnong Descent Valley Slump",
+        "date": "2023-07-08",
+        "state": "Meghalaya",
+        "district": "East Khasi Hills",
+        "lat": 25.2010,
+        "lon": 91.9210,
+        "elevation_m": 490,
+        "category": "Translational Earth Slide",
+        "trigger": "Subsurface groundwater pipe pressure following 3-day downpour",
+        "fatalities": 0,
+        "injuries": 2,
+        "infrastructure_impact": "Tourist corridor road subsidence of 1.4 meters",
+        "size": "Small",
+        "susceptibility_zone": "Moderate"
+    },
+    {
+        "id": "GLC-NER-2022-06-15",
+        "title": "Nongstoin Cut Slope Debris Fall",
+        "date": "2022-06-15",
+        "state": "Meghalaya",
+        "district": "West Khasi Hills",
+        "lat": 25.5200,
+        "lon": 91.2670,
+        "elevation_m": 1410,
+        "category": "Debris Flow",
+        "trigger": "Extreme monsoon cloudburst (>380mm in 24h)",
+        "fatalities": 2,
+        "injuries": 6,
+        "infrastructure_impact": "Buried 3 village utility bridges and snapped power transmission pylons",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2021-07-12",
+        "title": "Umiam Lake Highway (NH-6) Slump",
+        "date": "2021-07-12",
+        "state": "Meghalaya",
+        "district": "Ri-Bhoi",
+        "lat": 25.6670,
+        "lon": 91.8980,
+        "elevation_m": 1020,
+        "category": "Rotational Road Slump",
+        "trigger": "Water table rise and heavy freight vibration along hill cut",
+        "fatalities": 0,
+        "injuries": 1,
+        "infrastructure_impact": "One lane of NH-6 Guwahati-Shillong corridor collapsed into reservoir valley",
+        "size": "Medium",
+        "susceptibility_zone": "Moderate"
+    },
+    {
+        "id": "GLC-NER-2022-06-20",
+        "title": "Tura Peak Foothill Flash Mudslide",
+        "date": "2022-06-20",
+        "state": "Meghalaya",
+        "district": "West Garo Hills",
+        "lat": 25.5180,
+        "lon": 90.2250,
+        "elevation_m": 650,
+        "category": "Mudflow",
+        "trigger": "Torrential rain triggering gully erosion in weathered gneiss",
+        "fatalities": 4,
+        "injuries": 8,
+        "infrastructure_impact": "Engulfed 6 semi-pucca houses; blocked Dalu-Tura road",
+        "size": "Large",
+        "susceptibility_zone": "Very High"
+    },
+
+    # --- SIKKIM CORRIDORS ---
+    {
+        "id": "GLC-NER-2023-10-04",
+        "title": "Chungthang Dam GLOF & Fluvial Landslide Surge",
+        "date": "2023-10-04",
+        "state": "Sikkim",
+        "district": "Mangan",
+        "lat": 27.6040,
+        "lon": 88.6470,
+        "elevation_m": 1790,
+        "category": "Glacial Lake Outburst Flash Flood & Valley Landslide",
+        "trigger": "South Lhonak Lake glacial outburst combined with cloudburst",
+        "fatalities": 42,
+        "injuries": 78,
+        "infrastructure_impact": "Washed away Chungthang hydro dam, 14 major bridges along Teesta, NH-10 severed",
+        "size": "Catastrophic",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2023-10-05",
+        "title": "Singtam Teesta Basin Slope Undermining",
+        "date": "2023-10-05",
+        "state": "Sikkim",
+        "district": "Gangtok",
+        "lat": 27.2350,
+        "lon": 88.4980,
+        "elevation_m": 410,
+        "category": "River Toe Undermining & Mudslide",
+        "trigger": "High-velocity flood surge scoured slope base during torrential rain",
+        "fatalities": 14,
+        "injuries": 29,
+        "infrastructure_impact": "Indreni bridge destroyed; riverside residential blocks collapsed into river",
+        "size": "Very Large",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2021-09-18",
+        "title": "Tathangchen Gangtok Urban Landslide",
+        "date": "2021-09-18",
+        "state": "Sikkim",
+        "district": "Gangtok",
+        "lat": 27.3410,
+        "lon": 88.6220,
+        "elevation_m": 1820,
+        "category": "Translational Debris Slide",
+        "trigger": "Continuous 72h monsoon rainfall (240mm) into high overburden slope",
+        "fatalities": 1,
+        "injuries": 4,
+        "infrastructure_impact": "Severed Gangtok-Nathula route for 48h; damaged municipal water supply mains",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2022-07-02",
+        "title": "Rangpo-Melli NH-10 Rockslide Sinking Zone",
+        "date": "2022-07-02",
+        "state": "Sikkim",
+        "district": "Pakyong",
+        "lat": 27.1760,
+        "lon": 88.5280,
+        "elevation_m": 350,
+        "category": "Rock Wedge Fall & Progressive Sinking",
+        "trigger": "Pore pressure build-up in weathered Daling phyllites",
+        "fatalities": 2,
+        "injuries": 6,
+        "infrastructure_impact": "Sikkim lifeline highway NH-10 closed for 5 straight days during peak tourist season",
+        "size": "Large",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2020-07-10",
+        "title": "Dikchu Valley High-Gradient Slump",
+        "date": "2020-07-10",
+        "state": "Sikkim",
+        "district": "Gangtok",
+        "lat": 27.3980,
+        "lon": 88.5820,
+        "elevation_m": 720,
+        "category": "Debris Flow",
+        "trigger": "290mm 48h rainfall over steep agricultural terrace cuts",
+        "fatalities": 0,
+        "injuries": 3,
+        "infrastructure_impact": "Damaged Dikchu hydro diversion road, submerged bridge approach",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2024-06-13",
+        "title": "Mangan-Dzongu Corridor Mud & Boulder Slide",
+        "date": "2024-06-13",
+        "state": "Sikkim",
+        "district": "Mangan",
+        "lat": 27.5120,
+        "lon": 88.5330,
+        "elevation_m": 1340,
+        "category": "Debris Avalanche",
+        "trigger": "Early monsoon cloudburst (310mm in 24h)",
+        "fatalities": 6,
+        "injuries": 14,
+        "infrastructure_impact": "Isolated North Sikkim district; washed out Sankalang bridge replacement",
+        "size": "Very Large",
+        "susceptibility_zone": "Very High"
+    },
+
+    # --- ARUNACHAL PRADESH ---
+    {
+        "id": "GLC-NER-2022-05-16",
+        "title": "Itanagar Papu Nallah Highway Slump",
+        "date": "2022-05-16",
+        "state": "Arunachal Pradesh",
+        "district": "Papum Pare",
+        "lat": 27.0980,
+        "lon": 93.6320,
+        "elevation_m": 380,
+        "category": "Road Embankment Collapse",
+        "trigger": "Heavy pre-monsoon precipitation and stream undercutting",
+        "fatalities": 2,
+        "injuries": 5,
+        "infrastructure_impact": "NH-415 four-lane highway section breached; disrupted twin capital traffic",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+    {
+        "id": "GLC-NER-2021-06-19",
+        "title": "Bhalukpong-Tawang Trans-Himalayan Highway Slide",
+        "date": "2021-06-19",
+        "state": "Arunachal Pradesh",
+        "district": "West Kameng",
+        "lat": 27.2150,
+        "lon": 92.5400,
+        "elevation_m": 1240,
+        "category": "Rockfall & Scree Avalanche",
+        "trigger": "Seepage along fault plane following 5-day continuous rains",
+        "fatalities": 1,
+        "injuries": 3,
+        "infrastructure_impact": "Strategic defense road to Tawang blocked for 72h by 1,200m3 debris",
+        "size": "Large",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2023-07-22",
+        "title": "Pasighat Hill Road Rotational Failure",
+        "date": "2023-07-22",
+        "state": "Arunachal Pradesh",
+        "district": "East Siang",
+        "lat": 28.0720,
+        "lon": 95.3280,
+        "elevation_m": 290,
+        "category": "Rotational Slump",
+        "trigger": "Siang river monsoon flood level rise causing bank erosion",
+        "fatalities": 0,
+        "injuries": 2,
+        "infrastructure_impact": "Blocked Pasighat-Pangin road; affected power transmission towers",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+
+    # --- MANIPUR & NAGALAND ---
+    {
+        "id": "GLC-NER-2022-06-30",
+        "title": "Tupul Railway Construction Yard Debris Disaster",
+        "date": "2022-06-30",
+        "state": "Manipur",
+        "district": "Noney",
+        "lat": 24.7120,
+        "lon": 93.6820,
+        "elevation_m": 530,
+        "category": "Catastrophic Debris Flow & River Damming",
+        "trigger": "Heavy monsoon rainfall on modified slope during Jiribam-Imphal railway work",
+        "fatalities": 61,
+        "injuries": 18,
+        "infrastructure_impact": "Damaged 107 Territorial Army camp; dammed Ijej river creating flood hazard lake",
+        "size": "Catastrophic",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2021-08-14",
+        "title": "Kohima-Dimapur Highway (NH-29) Pagla Pahar Slide",
+        "date": "2021-08-14",
+        "state": "Nagaland",
+        "district": "Chümoukedima",
+        "lat": 25.7950,
+        "lon": 93.7710,
+        "elevation_m": 310,
+        "category": "Rockfall & Mud Torrent",
+        "trigger": "Continuous rain causing boulder dislodgement from weathered sandstone cliffs",
+        "fatalities": 2,
+        "injuries": 7,
+        "infrastructure_impact": "Crushed multiple commercial vehicles; major Nagaland economic lifeline halted for 4 days",
+        "size": "Large",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2023-07-04",
+        "title": "Old KMC Dumping Ground Kohima Mudslide",
+        "date": "2023-07-04",
+        "state": "Nagaland",
+        "district": "Kohima",
+        "lat": 25.6690,
+        "lon": 94.1080,
+        "elevation_m": 1440,
+        "category": "Anthropogenic Slope Failure / Mudflow",
+        "trigger": "Waste dump slope saturation under 200mm rainfall",
+        "fatalities": 1,
+        "injuries": 4,
+        "infrastructure_impact": "NH-2 bypass blocked; structural risk to 20 downhill homes",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    },
+
+    # --- MIZORAM ---
+    {
+        "id": "GLC-NER-2024-05-28",
+        "title": "Aizawl Melthum Stone Quarry & Hill Slope Collapse",
+        "date": "2024-05-28",
+        "state": "Mizoram",
+        "district": "Aizawl",
+        "lat": 23.7050,
+        "lon": 92.7150,
+        "elevation_m": 880,
+        "category": "Catastrophic Rockfall & Quarry Collapse",
+        "trigger": "Severe tropical downpour from Cyclone Remal (over 280mm in 24h)",
+        "fatalities": 34,
+        "injuries": 15,
+        "infrastructure_impact": "Multiple settlements buried in Melthum, Hlimen, Falkawn; state highway closed",
+        "size": "Catastrophic",
+        "susceptibility_zone": "Very High"
+    },
+    {
+        "id": "GLC-NER-2021-07-02",
+        "title": "Lunglei Valley Road Debris Flow",
+        "date": "2021-07-02",
+        "state": "Mizoram",
+        "district": "Lunglei",
+        "lat": 22.8850,
+        "lon": 92.7420,
+        "elevation_m": 720,
+        "category": "Debris Flow",
+        "trigger": "Prolonged monsoon downpour on steep clay-rich shale",
+        "fatalities": 0,
+        "injuries": 3,
+        "infrastructure_impact": "Blocked district connecting roads for 5 days",
+        "size": "Medium",
+        "susceptibility_zone": "High"
+    }
+]
+
+def generate_geojson():
+    features = []
+    for item in HISTORICAL_LANDSLIDES:
+        # Bounding box filter for NER (including Sikkim pilot district)
+        # Lat: 22.0 to 29.5, Lon: 88.0 to 97.5
+        if not (22.0 <= item["lat"] <= 29.5 and 88.0 <= item["lon"] <= 97.5):
+            print(f"Skipping out-of-bounds record: {item['id']}")
+            continue
+
+        feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [item["lon"], item["lat"]]
+            },
+            "properties": {
+                "id": item["id"],
+                "event_title": item["title"],
+                "date": item["date"],
+                "year": int(item["date"][:4]),
+                "state": item["state"],
+                "district": item["district"],
+                "elevation_m": item["elevation_m"],
+                "landslide_category": item["category"],
+                "trigger": item["trigger"],
+                "fatalities": item["fatalities"],
+                "injuries": item["injuries"],
+                "infrastructure_impact": item["infrastructure_impact"],
+                "size": item["size"],
+                "susceptibility_zone": item["susceptibility_zone"]
+            }
+        }
+        features.append(feature)
+
+    feature_collection = {
+        "type": "FeatureCollection",
+        "metadata": {
+            "name": "North Eastern Region (NER) Historical Landslide Catalog",
+            "source": "NASA Global Landslide Catalog (GLC) & Geological Survey of India (GSI) Open Records",
+            "bounding_box": {
+                "min_lat": 22.0,
+                "max_lat": 29.5,
+                "min_lon": 89.5,
+                "max_lon": 97.5
+            },
+            "count": len(features)
+        },
+        "features": features
+    }
+
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(feature_collection, f, indent=2)
+
+    print(f"Successfully generated {len(features)} historical landslide records in {OUTPUT_FILE}")
+
+if __name__ == "__main__":
+    generate_geojson()

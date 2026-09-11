@@ -191,5 +191,62 @@ export const apiClient = {
       console.error("Predict risk call failed:", err);
       throw err;
     }
+  },
+
+  async fetchWeatherForecast(lat, lon) {
+    try {
+      const res = await fetch(`${API_BASE}/weather/${lat}/${lon}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn("Live weather fetch failed, using fallback:", err);
+      return {
+        source: "Client Fallback",
+        rainfall_72h_mm: 95.0,
+        precipitation_rate_2h_mm: 12.0,
+        soil_moisture_pct: 62.0,
+        flash_flood_warning: false,
+        warning_reasons: ["Telemetry within normal bounds"]
+      };
+    }
+  },
+
+  async fetchElevation(lat, lon) {
+    try {
+      const res = await fetch(`${API_BASE}/elevation/${lat}/${lon}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn("Live elevation fetch failed:", err);
+      return { elevation_m: 650, slope_deg: 32.0, slope_category: "Steep (30°-45°)" };
+    }
+  },
+
+  async fetchHistoricalLandslides(params = {}) {
+    const query = new URLSearchParams();
+    if (params.state && params.state !== "ALL") query.append("state", params.state);
+    if (params.district && params.district !== "ALL") query.append("district", params.district);
+    if (params.min_fatalities) query.append("min_fatalities", params.min_fatalities);
+    if (params.limit) query.append("limit", params.limit);
+
+    try {
+      const res = await fetch(`${API_BASE}/historical-landslides?${query.toString()}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn("Historical landslides fetch failed:", err);
+      return { type: "FeatureCollection", features: [] };
+    }
+  },
+
+  async fetchVillageLiveRisk(villageId) {
+    try {
+      const res = await fetch(`${API_BASE}/villages/${villageId}/live-risk`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn(`Live risk fetch failed for village ${villageId}:`, err);
+      return null;
+    }
   }
 };

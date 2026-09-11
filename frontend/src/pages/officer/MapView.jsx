@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { MapContainer, TileLayer, Marker, Tooltip, Circle, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, WMSTileLayer, Marker, Popup, CircleMarker, Tooltip, Circle, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../api/client';
@@ -35,6 +35,13 @@ import {
   BellRing,
   Clock,
   CloudSun,
+  CloudRain,
+  Waves,
+  Zap,
+  History,
+  Globe,
+  Satellite,
+  Sparkles,
   Wind,
   Droplets,
   Calendar,
@@ -268,6 +275,23 @@ export default function MapView() {
   const [showVulnerableRoads, setShowVulnerableRoads] = useState(true);
   const [showSmsModal, setShowSmsModal] = useState(false);
 
+  // ISRO Bhuvan Real GIS WMS Layers
+  const [showBhuvanLulc, setShowBhuvanLulc] = useState(false);
+  const [showBhuvanHazard, setShowBhuvanHazard] = useState(false);
+  const [showBhuvanFlood, setShowBhuvanFlood] = useState(false);
+  const [showBhuvanMenu, setShowBhuvanMenu] = useState(false);
+
+  // Real Historical Landslide Catalog (NASA GLC / GSI GeoJSON)
+  const [showHistoricalLandslides, setShowHistoricalLandslides] = useState(true);
+  const [historicalLandslides, setHistoricalLandslides] = useState([]);
+  const [selectedHistoricalEvent, setSelectedHistoricalEvent] = useState(null);
+
+  // Live Open-Meteo & Dynamic Geotechnical Risk Telemetry
+  const [liveWeatherData, setLiveWeatherData] = useState(null);
+  const [liveTerrainData, setLiveTerrainData] = useState(null);
+  const [liveRiskData, setLiveRiskData] = useState(null);
+  const [loadingLiveRisk, setLoadingLiveRisk] = useState(false);
+
   // Live Clock
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
 
@@ -464,6 +488,70 @@ export default function MapView() {
     }
   }, [villages, filteredVillages, officerAssignedDistrict, selectedDistrict]);
 
+  // Load Real Historical Landslides (NASA GLC / GSI GeoJSON)
+  useEffect(() => {
+    const loadHistoricalData = async () => {
+      try {
+        const geojson = await apiClient.fetchHistoricalLandslides({
+          state: selectedState,
+          district: selectedDistrict
+        });
+        if (geojson && geojson.features) {
+          setHistoricalLandslides(geojson.features);
+        }
+      } catch (err) {
+        console.warn('Failed to load historical landslides:', err);
+      }
+    };
+    loadHistoricalData();
+  }, [selectedState, selectedDistrict]);
+
+  // Load District-Level Real-Time Weather (Open-Meteo & Flash Flood)
+  useEffect(() => {
+    if (!mapCenter || mapCenter.length < 2) return;
+    const loadDistrictWeather = async () => {
+      try {
+        const weather = await apiClient.fetchWeatherForecast(mapCenter[0], mapCenter[1]);
+        if (weather) {
+          setLiveWeatherData(weather);
+        }
+      } catch (err) {
+        console.warn('Failed to load district live weather:', err);
+      }
+    };
+    loadDistrictWeather();
+  }, [mapCenter]);
+
+  // Load Selected Settlement Live Geotechnical & Hydrological Risk Telemetry
+  useEffect(() => {
+    if (!selectedVillage) {
+      setLiveRiskData(null);
+      return;
+    }
+    const loadVillageRisk = async () => {
+      setLoadingLiveRisk(true);
+      try {
+        const res = await apiClient.fetchVillageLiveRisk(selectedVillage.id);
+        if (res) {
+          setLiveRiskData(res.risk_evaluation);
+          setLiveWeatherData(res.live_weather);
+          setLiveTerrainData(res.live_terrain);
+        } else {
+          // Fallback direct calls if needed
+          const weather = await apiClient.fetchWeatherForecast(selectedVillage.lat, selectedVillage.lon);
+          const terrain = await apiClient.fetchElevation(selectedVillage.lat, selectedVillage.lon);
+          setLiveWeatherData(weather);
+          setLiveTerrainData(terrain);
+        }
+      } catch (err) {
+        console.warn('Failed to load village live risk telemetry:', err);
+      } finally {
+        setLoadingLiveRisk(false);
+      }
+    };
+    loadVillageRisk();
+  }, [selectedVillage?.id]);
+
   const handleNotificationClick = (item) => {
     if (item.village) {
       setSelectedVillage(item.village);
@@ -520,8 +608,90 @@ export default function MapView() {
               className={`px-2 py-0.5 rounded-lg transition font-medium ${showGsiLayer ? 'bg-amber-600 text-white font-bold shadow-sm' : 'text-slate-400 hover:text-white'}`}
               title="Toggle Geological Survey of India Fault Lines"
             >
-              🗺️ GSI Overlay {showGsiLayer ? 'ON' : 'OFF'}
+              🗺️ GSI Faults {showGsiLayer ? 'ON' : 'OFF'}
             </button>
+            <button
+              onClick={() => setShowHistoricalLandslides(!showHistoricalLandslides)}
+              className={`px-2 py-0.5 rounded-lg transition font-medium ${showHistoricalLandslides ? 'bg-red-600 text-white font-bold shadow-sm' : 'text-slate-400 hover:text-white'}`}
+              title="Toggle NASA GLC & GSI Historical Landslides ({historicalLandslides.length} events)"
+            >
+              🌋 Historical GLC ({historicalLandslides.length}) {showHistoricalLandslides ? 'ON' : 'OFF'}
+            </button>
+            {/* ISRO Bhuvan WMS Menu Button */}
+            <div className="relative">
+              <button
+                onClick={() => setShowBhuvanMenu(!showBhuvanMenu)}
+                className={`px-2 py-0.5 rounded-lg transition font-medium flex items-center gap-1 ${
+                  showBhuvanLulc || showBhuvanHazard || showBhuvanFlood
+                    ? 'bg-emerald-600 text-white font-bold shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                title="ISRO Bhuvan WMS Real GIS Layers"
+              >
+                <Satellite className="w-3 h-3" />
+                <span>ISRO Bhuvan</span>
+                <ChevronDown className="w-2.5 h-2.5" />
+              </button>
+
+              {showBhuvanMenu && (
+                <div className="absolute right-0 mt-2 w-64 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-3 z-50 text-white space-y-2 animate-in fade-in">
+                  <div className="flex items-center justify-between pb-1.5 border-b border-slate-800">
+                    <span className="text-[11px] font-bold text-sky-400 flex items-center gap-1">
+                      <Globe className="w-3.5 h-3.5" /> ISRO Bhuvan WMS Layers
+                    </span>
+                    <button
+                      onClick={() => setShowBhuvanMenu(false)}
+                      className="text-[10px] text-slate-400 hover:text-white"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div className="space-y-1.5 text-[11px]">
+                    <label className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={showBhuvanLulc}
+                        onChange={(e) => setShowBhuvanLulc(e.target.checked)}
+                        className="rounded accent-emerald-500"
+                      />
+                      <div>
+                        <div className="font-semibold text-slate-200">Bhuvan LULC 50K</div>
+                        <div className="text-[9px] text-slate-400">Land Use / Land Cover Basemap</div>
+                      </div>
+                    </label>
+
+                    <label className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={showBhuvanHazard}
+                        onChange={(e) => setShowBhuvanHazard(e.target.checked)}
+                        className="rounded accent-amber-500"
+                      />
+                      <div>
+                        <div className="font-semibold text-slate-200">Landslide Hazard Zonation</div>
+                        <div className="text-[9px] text-slate-400">ISRO Susceptibility Index</div>
+                      </div>
+                    </label>
+
+                    <label className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={showBhuvanFlood}
+                        onChange={(e) => setShowBhuvanFlood(e.target.checked)}
+                        className="rounded accent-blue-500"
+                      />
+                      <div>
+                        <div className="font-semibold text-slate-200">Flood Inundation Overlay</div>
+                        <div className="text-[9px] text-slate-400">Hydrological Hazard Boundaries</div>
+                      </div>
+                    </label>
+                  </div>
+                  <div className="text-[9px] text-slate-500 pt-1 border-t border-slate-800 font-mono">
+                    WMS: bhuvan-vec1.nrsc.gov.in
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* DYNAMIC NOTIFICATION HUB DROPDOWN */}
@@ -599,6 +769,35 @@ export default function MapView() {
           </div>
         </div>
       </div>
+
+      {/* REAL-TIME FLASH FLOOD WARNING BANNER (OPEN-METEO CLOUDBURST / RIVER DISCHARGE TRIGGER) */}
+      {liveWeatherData?.flash_flood_warning && (
+        <div className="bg-gradient-to-r from-amber-600 via-rose-600 to-red-700 text-white px-4 py-2.5 text-xs shadow-lg border-b border-rose-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 z-20 animate-pulse">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <div className="p-1 rounded-md bg-white/25 flex-shrink-0">
+              <Zap className="w-4 h-4 text-amber-200" />
+            </div>
+            <div>
+              <span className="font-extrabold uppercase tracking-wider text-amber-100">
+                ⚡ FLASH FLOOD EARLY WARNING IN EFFECT:
+              </span>
+              <span className="ml-1.5 text-white font-medium">
+                {liveWeatherData.warning_reasons && liveWeatherData.warning_reasons.length > 0
+                  ? liveWeatherData.warning_reasons.join(' • ')
+                  : 'High-intensity cloudburst rate (>50mm/2h) or river discharge surge detected via Open-Meteo GloFAS telemetry.'}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded-full bg-black/40 text-amber-300 font-mono font-bold text-[10px] border border-amber-300/40">
+              Discharge: {liveWeatherData.river_discharge_m3s ? `${liveWeatherData.river_discharge_m3s} m³/s` : 'Surging'}
+            </span>
+            <span className="px-2.5 py-0.5 rounded-full bg-white text-rose-800 font-extrabold text-[10px] uppercase">
+              Riverbed Alert
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* DYNAMIC CRITICAL HAZARD WARNING BAR (WITH EXPAND ALL '+ MORE' TOGGLE) */}
       {highRiskVillages.length > 0 && (
@@ -777,6 +976,38 @@ export default function MapView() {
               />
             )}
 
+            {/* ISRO BHUVAN REAL WMS GIS MAP LAYERS */}
+            {showBhuvanLulc && (
+              <WMSTileLayer
+                url="https://bhuvan-vec1.nrsc.gov.in/bhuvan/wms"
+                layers="lulc:LULC50K_1112"
+                format="image/png"
+                transparent={true}
+                opacity={0.65}
+                attribution="&copy; ISRO Bhuvan LULC 50K"
+              />
+            )}
+            {showBhuvanHazard && (
+              <WMSTileLayer
+                url="https://bhuvan-vec1.nrsc.gov.in/bhuvan/wms"
+                layers="landslide:landslide_hazard"
+                format="image/png"
+                transparent={true}
+                opacity={0.7}
+                attribution="&copy; ISRO Landslide Hazard Zonation"
+              />
+            )}
+            {showBhuvanFlood && (
+              <WMSTileLayer
+                url="https://bhuvan-vec1.nrsc.gov.in/bhuvan/wms"
+                layers="flood:flood_inundation"
+                format="image/png"
+                transparent={true}
+                opacity={0.7}
+                attribution="&copy; ISRO Flood Inundation"
+              />
+            )}
+
             <MapRecenter targetCoords={mapCenter} zoom={mapZoom} />
             <DistrictBoundsFitter
               district={officerAssignedDistrict || (selectedDistrict !== 'ALL' ? selectedDistrict : null)}
@@ -941,6 +1172,69 @@ export default function MapView() {
                 </Marker>
               );
             })}
+
+            {/* REAL HISTORICAL LANDSLIDE CATALOG (NASA GLC / GSI GEOJSON) */}
+            {showHistoricalLandslides && historicalLandslides.map((feat) => {
+              const coords = feat.geometry?.coordinates;
+              if (!coords || coords.length < 2) return null;
+              const [lon, lat] = coords;
+              const props = feat.properties || {};
+              const hasFatalities = (props.fatalities || 0) > 0;
+
+              return (
+                <CircleMarker
+                  key={props.id || `hist-${lat}-${lon}`}
+                  center={[lat, lon]}
+                  radius={hasFatalities ? 8 : 6}
+                  pathOptions={{
+                    color: '#ffffff',
+                    fillColor: hasFatalities ? '#dc2626' : '#ea580c',
+                    fillOpacity: 0.9,
+                    weight: 2
+                  }}
+                  eventHandlers={{
+                    click: () => setSelectedHistoricalEvent(props)
+                  }}
+                >
+                  <Popup className="historical-slide-popup">
+                    <div className="p-1.5 min-w-[240px] max-w-[290px] text-xs font-sans text-slate-900 space-y-1.5">
+                      <div className="flex items-center justify-between border-b pb-1">
+                        <span className="font-extrabold text-red-700 text-[11px] uppercase tracking-wide flex items-center gap-1">
+                          🌋 GLC Historical Event
+                        </span>
+                        <span className="font-mono text-[10px] text-slate-500 font-bold">{props.date}</span>
+                      </div>
+                      <div className="font-bold text-slate-900 text-xs leading-snug">
+                        {props.event_title}
+                      </div>
+                      <div className="text-[11px] text-slate-600">
+                        <strong>Location:</strong> {props.district}, {props.state} ({props.elevation_m}m MSL)
+                      </div>
+                      <div className="text-[11px] text-slate-600">
+                        <strong>Category:</strong> {props.landslide_category}
+                      </div>
+                      <div className="text-[11px] text-amber-900 bg-amber-50 p-1.5 rounded-lg border border-amber-200 leading-snug">
+                        <strong>Trigger:</strong> {props.trigger}
+                      </div>
+                      <div className="flex items-center justify-between text-[11px] font-bold">
+                        <span className={hasFatalities ? 'text-red-600 font-bold' : 'text-slate-600'}>
+                          Fatalities: {props.fatalities || 0}
+                        </span>
+                        <span className="text-orange-600">Injuries: {props.injuries || 0}</span>
+                        <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 text-[9px]">
+                          {props.size || 'Large'}
+                        </span>
+                      </div>
+                      {props.infrastructure_impact && (
+                        <div className="text-[10px] text-slate-700 bg-slate-100 p-1.5 rounded-lg leading-snug">
+                          <strong>Impact:</strong> {props.infrastructure_impact}
+                        </div>
+                      )}
+                    </div>
+                  </Popup>
+                </CircleMarker>
+              );
+            })}
           </MapContainer>
 
           {/* Map Legend */}
@@ -986,6 +1280,26 @@ export default function MapView() {
                   <span className="text-slate-800 dark:text-slate-200">0-25 Low</span>
                 </div>
               </div>
+            </div>
+
+            {/* Real Open Data & Satellite Layers Legend */}
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-1 text-[10px]">
+              <div className="flex items-center justify-between font-bold text-slate-700 dark:text-slate-300">
+                <span className="flex items-center gap-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-600 border border-white"></span>
+                  <span>GLC Historical Slide ({historicalLandslides.length})</span>
+                </span>
+                <span className="text-red-500 font-mono">NASA/GSI</span>
+              </div>
+              {(showBhuvanLulc || showBhuvanHazard || showBhuvanFlood) && (
+                <div className="flex items-center justify-between font-bold text-emerald-600 dark:text-emerald-400">
+                  <span className="flex items-center gap-1">
+                    <Satellite className="w-3 h-3" />
+                    <span>ISRO Bhuvan WMS Active</span>
+                  </span>
+                  <span className="font-mono text-[9px] bg-emerald-100 dark:bg-emerald-950 px-1 py-0.2 rounded">Live WMS</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1115,6 +1429,78 @@ export default function MapView() {
                     </div>
                   </div>
 
+                  {/* LIVE OPEN-METEO & DYNAMIC AI RISK CARD */}
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-sky-50 to-indigo-50 dark:from-slate-950 dark:to-indigo-950/40 border border-sky-200 dark:border-sky-800/80 space-y-2.5 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 font-bold text-xs text-sky-900 dark:text-sky-300">
+                        <Sparkles className="w-3.5 h-3.5 text-sky-500" />
+                        <span>Live AI Dynamic Risk & Open-Meteo Engine</span>
+                      </div>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-sky-600 text-white font-bold">
+                        {loadingLiveRisk ? 'Fetching API...' : 'Live Open-Meteo'}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-[11px]">
+                      <div className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-sky-100 dark:border-sky-900">
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">72h Antecedent Rain</div>
+                        <div className="text-sm font-bold text-amber-600 dark:text-amber-400 font-mono">
+                          {liveWeatherData?.rainfall_72h_mm !== undefined ? `${liveWeatherData.rainfall_72h_mm} mm` : `${selectedVillage.rainfall_72h_mm} mm`}
+                        </div>
+                        <div className="text-[9px] text-slate-400">3-day open forecast accumulation</div>
+                      </div>
+
+                      <div className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-sky-100 dark:border-sky-900">
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">Live Soil Saturation</div>
+                        <div className="text-sm font-bold text-sky-600 dark:text-sky-400 font-mono">
+                          {liveWeatherData?.soil_moisture_pct !== undefined ? `${liveWeatherData.soil_moisture_pct}%` : `${selectedVillage.soil_moisture_pct}%`}
+                        </div>
+                        <div className="text-[9px] text-slate-400">3-9 cm depth volumetric</div>
+                      </div>
+
+                      <div className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-sky-100 dark:border-sky-900">
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">Elevation & Slope</div>
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-200 font-mono">
+                          {liveTerrainData?.slope_deg !== undefined ? `${liveTerrainData.slope_deg}°` : `${selectedVillage.slope_deg}°`}
+                        </div>
+                        <div className="text-[9px] text-slate-400">
+                          {liveTerrainData?.elevation_m || selectedVillage.elevation_m}m MSL (5-pt grid)
+                        </div>
+                      </div>
+
+                      <div className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-sky-100 dark:border-sky-900">
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">Riverbed Flash Risk</div>
+                        <div className="text-sm font-bold font-mono">
+                          {liveWeatherData?.flash_flood_warning ? (
+                            <span className="text-red-600 font-extrabold animate-pulse">⚡ HIGH ALERT</span>
+                          ) : (
+                            <span className="text-emerald-600 font-semibold">Normal Runoff</span>
+                          )}
+                        </div>
+                        <div className="text-[9px] text-slate-400">
+                          {liveWeatherData?.river_discharge_m3s ? `${liveWeatherData.river_discharge_m3s} m³/s discharge` : 'GloFAS Model'}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Nearest GLC Historical Disaster */}
+                    {liveRiskData?.nearest_historical_hazard?.title && (
+                      <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-900 dark:text-amber-200 space-y-1">
+                        <div className="flex items-center justify-between font-bold">
+                          <span className="flex items-center gap-1">
+                            <span>🌋 Nearest GLC Historical Event:</span>
+                          </span>
+                          <span className="font-mono text-[10px] bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-800 dark:text-amber-300">
+                            {liveRiskData.nearest_historical_hazard.distance_km} km away
+                          </span>
+                        </div>
+                        <div className="font-semibold text-slate-800 dark:text-slate-200 text-[10px]">
+                          {liveRiskData.nearest_historical_hazard.title} ({liveRiskData.nearest_historical_hazard.date})
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Civil Defense Protocol */}
                   <div className="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-500/30 space-y-1.5">
                     <div className="flex items-center gap-2 text-rose-700 dark:text-rose-300 text-xs font-bold uppercase tracking-wider">
@@ -1122,7 +1508,7 @@ export default function MapView() {
                       <span>Civil Defense Protocol</span>
                     </div>
                     <p className="text-xs text-rose-900 dark:text-rose-100 leading-relaxed font-medium">
-                      {selectedVillage.suggested_action}
+                      {liveRiskData?.suggested_action || selectedVillage.suggested_action}
                     </p>
                   </div>
                 </div>

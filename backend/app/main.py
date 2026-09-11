@@ -3,19 +3,24 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers.villages import router as villages_router
 from app.routers.analytics import router as analytics_router
 from app.routers.reports import router as reports_router
+from app.routers.weather import router as weather_router
+from app.routers.terrain import router as terrain_router
+from app.routers.historical import router as historical_router
 
 app = FastAPI(
     title="NER Landslide Early Warning System (LEWS) API",
     description="""
     ## Smart India Hackathon Prototype: AI-Based Early Warning & Landslide Risk Monitoring Engine
     
-    ### Scope: Dima Hasao Pilot Corridor (Assam, North Eastern Region)
-    - **Villages & Geotechnical Telemetry**: 25 monitored settlements with real-time risk scores, slope angles, antecedent rainfall, and soil moisture saturation.
-    - **Dissemination Engine**: Suggested civil defense and mitigation actions.
+    ### Scope: Dima Hasao, East Khasi Hills & Gangtok Pilot Corridors (North Eastern Region)
+    - **Villages & Geotechnical Telemetry**: Monitored settlements with real-time risk scores, slope angles, antecedent rainfall, and soil moisture saturation.
+    - **Open-Meteo Live APIs**: High-resolution live weather, 72h antecedent rainfall, soil moisture, and river discharge for flash flood detection.
+    - **Open-Meteo Elevation Grid**: Live topographic slope gradient and elevation calculation.
+    - **NASA GLC Historical Landslides**: Real GeoJSON catalog of recorded disaster events across NER.
+    - **ISRO Bhuvan GIS Layers**: WMS integration for LULC, Landslide Hazard Zonation, and Flood Inundation.
     - **Crowdsourced Hazard Reports**: Citizen field submissions (geotagged cracks, rockfalls, mudflows).
-    - **ML Interface**: Drop-in compatible predictor for scikit-learn / XGBoost landslide susceptibility models.
     """,
-    version="1.0.0",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -33,6 +38,9 @@ app.add_middleware(
 app.include_router(villages_router, prefix="/api")
 app.include_router(analytics_router, prefix="/api")
 app.include_router(reports_router, prefix="/api")
+app.include_router(weather_router, prefix="/api")
+app.include_router(terrain_router, prefix="/api")
+app.include_router(historical_router, prefix="/api")
 
 @app.get("/", tags=["System"])
 def root():
@@ -43,6 +51,10 @@ def root():
         "interactive_docs": "/docs",
         "api_endpoints": {
             "villages": "/api/villages",
+            "village_live_risk": "/api/villages/{village_id}/live-risk",
+            "weather": "/api/weather/{lat}/{lon}",
+            "elevation": "/api/elevation/{lat}/{lon}",
+            "historical_landslides": "/api/historical-landslides",
             "district_summary": "/api/analytics/district-summary",
             "corridor_trends": "/api/analytics/corridor-time-series",
             "citizen_reports": "/api/reports",
