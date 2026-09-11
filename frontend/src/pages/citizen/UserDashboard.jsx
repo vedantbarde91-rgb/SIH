@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../api/client';
+import CitizenAIChatbot from '../../components/CitizenAIChatbot';
 import {
   User,
   PlusCircle,
@@ -372,6 +373,7 @@ export default function UserDashboard() {
           )}
         </div>
       </div>
+      <CitizenAIChatbot />
     </div>
   );
 }

@@ -1,52 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiClient } from '../api/client';
+import CitizenAIChatbot from '../components/CitizenAIChatbot';
 import {
   Shield,
   Send,
-  Mountain,
-  CloudRain,
-  Activity,
   ArrowRight,
   CheckCircle2,
-  Radio,
-  Layers,
-  Truck,
-  AlertTriangle,
-  User,
-  ExternalLink
+  User
 } from 'lucide-react';
 
 export default function Landing() {
   const { t } = useTranslation();
-  const [summary, setSummary] = useState(null);
-
-  useEffect(() => {
-    apiClient.fetchDistrictSummary()
-      .then((res) => setSummary(res.data))
-      .catch((err) => console.warn("Could not fetch summary on landing:", err));
-  }, []);
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex flex-col justify-between bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
-      {/* Top Banner Ticker */}
-      <div className="bg-sky-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800 px-4 py-2 text-center text-xs">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 text-sky-700 dark:text-sky-300 font-medium">
-          <Radio className="w-3.5 h-3.5 animate-pulse text-sky-500" />
-          <span>{t('landing.badge', 'North Eastern Region Early Warning System (NER-LEWS)')}</span>
-        </div>
-      </div>
-
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 flex-1 flex flex-col justify-center">
         {/* Clean, Classic Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-500/30 text-sky-600 dark:text-sky-400 text-xs font-semibold">
-            <Mountain className="w-3.5 h-3.5" />
-            <span>{t('landing.badge', 'North Eastern Region Early Warning System (NER-LEWS)')}</span>
-          </div>
-
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
             {t('landing.welcome_title', 'Welcome to the NER Landslide Monitoring Platform')}
           </h1>
@@ -162,41 +134,6 @@ export default function Landing() {
             </div>
           </div>
         </div>
-
-        {/* Quick Highlights Counter Bar */}
-        <div className="mt-12 max-w-5xl mx-auto w-full grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-center shadow-sm">
-            <div className="text-[10px] uppercase font-bold text-slate-400">Monitored Settlements</div>
-            <div className="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">
-              {summary?.total_monitored_settlements || '31'}
-            </div>
-            <div className="text-[10px] text-slate-500">Assam & Meghalaya</div>
-          </div>
-
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-center shadow-sm">
-            <div className="text-[10px] uppercase font-bold text-rose-500">Critical Hazard Zones</div>
-            <div className="text-xl font-extrabold text-rose-600 dark:text-rose-400 mt-0.5">
-              {summary?.risk_band_distribution?.Critical || '7'} Sites
-            </div>
-            <div className="text-[10px] text-slate-500">Risk Score ≥ 75</div>
-          </div>
-
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-center shadow-sm">
-            <div className="text-[10px] uppercase font-bold text-amber-500">Peak 72h Rain</div>
-            <div className="text-xl font-extrabold text-amber-600 dark:text-amber-400 mt-0.5">
-              265.0 mm
-            </div>
-            <div className="text-[10px] text-slate-500">Harangajao Pass</div>
-          </div>
-
-          <div className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-center shadow-sm">
-            <div className="text-[10px] uppercase font-bold text-emerald-500">DEOC Status</div>
-            <div className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">
-              Active
-            </div>
-            <div className="text-[10px] text-slate-500">24x7 Surveillance</div>
-          </div>
-        </div>
       </main>
 
       {/* Footer */}
@@ -214,6 +151,7 @@ export default function Landing() {
           </div>
         </div>
       </footer>
+      <CitizenAIChatbot />
     </div>
   );
 }

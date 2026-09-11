@@ -117,6 +117,59 @@ export function exportHistoryTimelineCSV(events, filterInfo = '') {
 }
 
 /**
+ * Exports citizen field reports table as RFC 4180 compliant CSV.
+ * Columns: Report ID, Timestamp, Hazard Type, Latitude, Longitude, Landmark / Location, District, State, Submitting Citizen Mobile Number, Verification Status, Photo Attachment URL, Officer Action Notes
+ */
+export function exportCitizenReportsCSV(reports, filterInfo = '') {
+  if (!reports || reports.length === 0) return;
+
+  const headers = [
+    'Report ID',
+    'Timestamp (ISO)',
+    'Timestamp (Local)',
+    'Hazard Type',
+    'Latitude',
+    'Longitude',
+    'Landmark / Location',
+    'District',
+    'State',
+    'Submitting Citizen Mobile Number',
+    'Verification Status',
+    'Photo Attachment URL',
+    'Officer Action Notes'
+  ];
+
+  const rows = reports.map((r) => {
+    const lat = r.lat != null ? r.lat : '';
+    const lon = r.lon != null ? r.lon : (r.lng != null ? r.lng : '');
+    const localTime = r.created_at ? new Date(r.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '';
+    const photo = r.photo_url || (r.photo_base64 ? '[Base64 Embedded Image]' : 'None');
+    const officerNotes = r.officer_notes || 'Pending DEOC review';
+
+    return [
+      `"${(r.id || '').replace(/"/g, '""')}"`,
+      `"${(r.created_at || '').replace(/"/g, '""')}"`,
+      `"${localTime.replace(/"/g, '""')}"`,
+      `"${(r.hazard_type || 'landslide').replace(/"/g, '""')}"`,
+      lat,
+      lon,
+      `"${(r.location_name || r.location || '').replace(/"/g, '""')}"`,
+      `"${(r.district || 'Dima Hasao').replace(/"/g, '""')}"`,
+      `"${(r.state || 'Assam').replace(/"/g, '""')}"`,
+      `"${(r.phone_number || r.phone || 'Anonymous / Guest').replace(/"/g, '""')}"`,
+      `"${(r.status || 'pending').toUpperCase().replace(/"/g, '""')}"`,
+      `"${photo.replace(/"/g, '""')}"`,
+      `"${officerNotes.replace(/"/g, '""')}"`
+    ];
+  });
+
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+  const timestamp = new Date().toISOString().slice(0, 10);
+  const suffix = filterInfo ? `_${filterInfo.replace(/[\s/\\:]+/g, '_')}` : '';
+  downloadCSV(csvContent, `NER_Citizen_Field_Reports${suffix}_${timestamp}.csv`);
+}
+
+/**
  * Browser download trigger
  */
 function downloadCSV(csvContent, filename) {
@@ -130,3 +183,4 @@ function downloadCSV(csvContent, filename) {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+

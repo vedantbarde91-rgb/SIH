@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import { apiClient } from '../../api/client';
+import CitizenAIChatbot from '../../components/CitizenAIChatbot';
+import { syncCitizenFromReport } from '../../utils/citizenDatabase';
 import {
   AlertTriangle,
   Camera,
@@ -104,15 +106,6 @@ export default function ReportForm() {
   const [submittedReport, setSubmittedReport] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
 
-  useEffect(() => {
-    handleGetLocation();
-    return () => {
-      if (photoPreview && photoPreview.startsWith('blob:')) {
-        URL.revokeObjectURL(photoPreview);
-      }
-    };
-  }, []);
-
   const handleGetLocation = () => {
     if (!navigator.geolocation) {
       setGpsStatus('Geolocation not supported; default corridor pin set');
@@ -131,12 +124,21 @@ export default function ReportForm() {
       },
       (err) => {
         console.warn('Geolocation error:', err.message);
-        setGpsStatus('GPS Corridor Reference: 25.1325°N, 93.0422°E');
+        setGpsStatus('GPS permission denied; default corridor pin retained');
         setIsLocating(false);
       },
-      { enableHighAccuracy: true, timeout: 6000 }
+      { timeout: 8000, enableHighAccuracy: true }
     );
   };
+
+  useEffect(() => {
+    handleGetLocation();
+    return () => {
+      if (photoPreview && photoPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(photoPreview);
+      }
+    };
+  }, []);
 
   // Fixed Image Upload Handler converting file to compressed persistent Data URL
   const handleDeviceFileUpload = (e) => {
@@ -270,6 +272,7 @@ export default function ReportForm() {
       };
 
       const result = await apiClient.submitReport(reportPayload);
+      syncCitizenFromReport(reportPayload);
       
       // Also cache to local storage for Citizen Dashboard tracking
       const existingUserReports = JSON.parse(localStorage.getItem('ner_user_submitted_reports') || '[]');
@@ -708,6 +711,7 @@ export default function ReportForm() {
           </div>
         </div>
       )}
+      <CitizenAIChatbot />
     </div>
   );
 }

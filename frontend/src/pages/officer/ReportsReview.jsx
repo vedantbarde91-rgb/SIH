@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../api/client';
 import OfflineBanner from '../../components/OfflineBanner';
 import { authService } from '../../firebase/authService';
+import { useDistrict } from '../../context/DistrictContext';
 import {
   FileCheck2,
   AlertTriangle,
@@ -14,27 +15,29 @@ import {
   Layers,
   Flame,
   Construction,
-  ShieldAlert
+  ShieldAlert,
+  Download
 } from 'lucide-react';
+import { exportCitizenReportsCSV } from '../../utils/csvExport';
 
 export default function ReportsReview() {
   const { t } = useTranslation();
-  const currentOfficer = authService.getCurrentOfficer();
-  const isSuperAdmin = currentOfficer?.role?.toLowerCase().includes('super') || currentOfficer?.jurisdiction === 'ALL';
-  const officerDistrict = (!isSuperAdmin && currentOfficer?.jurisdiction && currentOfficer.jurisdiction !== 'ALL')
-    ? currentOfficer.jurisdiction
-    : null;
+  const {
+    selectedState,
+    selectedDistrict,
+    officerAssignedDistrict,
+    isSuperAdmin
+  } = useDistrict();
 
   const [reports, setReports] = useState([]);
   const [filterStatus, setFilterStatus] = useState('ALL');
-  const [selectedDistrictFilter, setSelectedDistrictFilter] = useState('ALL');
   const [selectedPhotoModal, setSelectedPhotoModal] = useState(null);
   const [activeOfficerNote, setActiveOfficerNote] = useState({});
   const [updatingId, setUpdatingId] = useState(null);
 
   const loadReports = async () => {
     try {
-      const params = officerDistrict ? { district: officerDistrict } : null;
+      const params = officerAssignedDistrict ? { district: officerAssignedDistrict } : null;
       const data = await apiClient.fetchReports(params);
       setReports(data);
     } catch (err) {
@@ -44,7 +47,7 @@ export default function ReportsReview() {
 
   useEffect(() => {
     loadReports();
-  }, [officerDistrict]);
+  }, [officerAssignedDistrict]);
 
   const handleStatusChange = async (reportId, newStatus) => {
     setUpdatingId(reportId);
@@ -62,8 +65,9 @@ export default function ReportsReview() {
   };
 
   const filteredReports = reports.filter((r) => {
-    if (officerDistrict && (r.district || 'Dima Hasao').toLowerCase() !== officerDistrict.toLowerCase()) return false;
-    if (!officerDistrict && selectedDistrictFilter !== 'ALL' && (r.district || 'Dima Hasao').toLowerCase() !== selectedDistrictFilter.toLowerCase()) return false;
+    if (officerAssignedDistrict && (r.district || '').toLowerCase() !== officerAssignedDistrict.toLowerCase()) return false;
+    if (selectedState !== 'ALL' && r.state && r.state.toLowerCase() !== selectedState.toLowerCase()) return false;
+    if (selectedDistrict !== 'ALL' && (r.district || '').toLowerCase() !== selectedDistrict.toLowerCase()) return false;
     if (filterStatus === 'ALL') return true;
     return r.status.toLowerCase() === filterStatus.toLowerCase();
   });
@@ -124,28 +128,6 @@ export default function ReportsReview() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-          {/* Jurisdiction / District Filter */}
-          {officerDistrict ? (
-            <div className="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-xs font-semibold shadow-sm">
-              <span>Jurisdiction: <strong>{officerDistrict}</strong></span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1.5 text-xs font-semibold">
-              <span className="text-slate-500">District:</span>
-              <select
-                value={selectedDistrictFilter}
-                onChange={(e) => setSelectedDistrictFilter(e.target.value)}
-                className="px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-medium focus:outline-none focus:border-sky-500 shadow-sm"
-              >
-                <option value="ALL">All Districts (NER)</option>
-                <option value="Dima Hasao">Dima Hasao (Assam)</option>
-                <option value="East Khasi Hills">East Khasi Hills (Meghalaya)</option>
-                <option value="Gangtok">Gangtok (Sikkim)</option>
-                <option value="Kamrup">Kamrup (Assam)</option>
-              </select>
-            </div>
-          )}
-
           {/* Status Filter Buttons */}
           <div className="flex items-center gap-1 bg-white dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
             {['ALL', 'pending', 'reviewed', 'actioned'].map((st) => (
@@ -162,6 +144,16 @@ export default function ReportsReview() {
               </button>
             ))}
           </div>
+
+          {/* Export Reports (CSV) Button */}
+          <button
+            onClick={() => exportCitizenReportsCSV(filteredReports, officerAssignedDistrict || (selectedDistrict !== 'ALL' ? selectedDistrict : selectedState))}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm transition"
+            title="Download citizen reports archive as CSV"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export Reports (CSV)</span>
+          </button>
         </div>
       </div>
 

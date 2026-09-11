@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../api/client';
+import { authService } from '../../firebase/authService';
+import { useDistrict } from '../../context/DistrictContext';
 import OfflineBanner from '../../components/OfflineBanner';
 import { useTheme } from '../../context/ThemeContext';
 import {
@@ -36,6 +38,15 @@ export default function Analytics() {
   const [villages, setVillages] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const {
+    selectedState,
+    selectedDistrict,
+    officerAssignedDistrict
+  } = useDistrict();
+
+  const activeScopeName = officerAssignedDistrict
+    || (selectedDistrict !== 'ALL' ? selectedDistrict : (selectedState !== 'ALL' ? selectedState : 'NER'));
+
   useEffect(() => {
     Promise.all([
       apiClient.fetchDistrictSummary(),
@@ -51,12 +62,70 @@ export default function Analytics() {
       .finally(() => setLoading(false));
   }, []);
 
-  const bandChartData = [
-    { name: 'Low (0-25)', count: summary?.risk_band_distribution?.Low || 4, color: '#10b981' },
-    { name: 'Moderate (26-50)', count: summary?.risk_band_distribution?.Moderate || 8, color: '#f59e0b' },
-    { name: 'High (51-74)', count: summary?.risk_band_distribution?.High || 10, color: '#f97316' },
-    { name: 'Critical (75-100)', count: 9, color: '#ef4444' }
-  ];
+  // Strict district & state scoping of settlements based on global header selection
+  const scopedVillages = useMemo(() => {
+    return villages.filter((v) => {
+      if (officerAssignedDistrict && (v.district || '').toLowerCase() !== officerAssignedDistrict.toLowerCase()) {
+        return false;
+      }
+      if (selectedState !== 'ALL' && (v.state || '').toLowerCase() !== selectedState.toLowerCase()) {
+        return false;
+      }
+      if (selectedDistrict !== 'ALL' && (v.district || '').toLowerCase() !== selectedDistrict.toLowerCase()) {
+        return false;
+      }
+      return true;
+    });
+  }, [villages, officerAssignedDistrict, selectedState, selectedDistrict]);
+
+  // Derived KPI metrics
+  const metrics = useMemo(() => {
+    if (!scopedVillages.length) {
+      return {
+        avgRain: summary?.avg_72h_rainfall_mm || '142.4',
+        avgMoisture: summary?.avg_soil_moisture_pct || '63.8',
+        alertLevel: summary?.alert_level || 'ORANGE ALERT',
+        totalCount: summary?.total_monitored_settlements || 31
+      };
+    }
+    const totalRain = scopedVillages.reduce((acc, v) => acc + (v.rainfall_72h_mm || 0), 0);
+    const avgRain = (totalRain / scopedVillages.length).toFixed(1);
+
+    const totalMoisture = scopedVillages.reduce((acc, v) => acc + (v.soil_moisture_pct || 0), 0);
+    const avgMoisture = (totalMoisture / scopedVillages.length).toFixed(1);
+
+    const criticalCount = scopedVillages.filter((v) => (v.risk_percentage || v.risk_score) >= 75).length;
+    const alertLevel = criticalCount > 2 ? 'RED ALERT' : (criticalCount > 0 ? 'ORANGE ALERT' : 'YELLOW WATCH');
+
+    return {
+      avgRain,
+      avgMoisture,
+      alertLevel,
+      totalCount: scopedVillages.length
+    };
+  }, [scopedVillages, summary]);
+
+  const bandChartData = useMemo(() => {
+    if (!scopedVillages.length) {
+      return [
+        { name: 'Low (0-25)', count: summary?.risk_band_distribution?.Low || 4, color: '#10b981' },
+        { name: 'Moderate (26-50)', count: summary?.risk_band_distribution?.Moderate || 8, color: '#f59e0b' },
+        { name: 'High (51-74)', count: summary?.risk_band_distribution?.High || 10, color: '#f97316' },
+        { name: 'Critical (75-100)', count: 9, color: '#ef4444' }
+      ];
+    }
+    const low = scopedVillages.filter((v) => (v.risk_band || '').toUpperCase() === 'LOW' || (v.risk_percentage || v.risk_score) <= 25).length;
+    const mod = scopedVillages.filter((v) => (v.risk_band || '').toUpperCase() === 'MODERATE' || ((v.risk_percentage || v.risk_score) > 25 && (v.risk_percentage || v.risk_score) <= 50)).length;
+    const high = scopedVillages.filter((v) => (v.risk_band || '').toUpperCase() === 'HIGH' || ((v.risk_percentage || v.risk_score) > 50 && (v.risk_percentage || v.risk_score) < 75)).length;
+    const crit = scopedVillages.filter((v) => (v.risk_band || '').toUpperCase() === 'CRITICAL' || (v.risk_percentage || v.risk_score) >= 75).length;
+
+    return [
+      { name: 'Low (0-25)', count: low, color: '#10b981' },
+      { name: 'Moderate (26-50)', count: mod, color: '#f59e0b' },
+      { name: 'High (51-74)', count: high, color: '#f97316' },
+      { name: 'Critical (75-100)', count: crit, color: '#ef4444' }
+    ];
+  }, [scopedVillages, summary]);
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 p-4 sm:p-6 lg:p-8 space-y-6 transition-colors">
@@ -68,10 +137,9 @@ export default function Analytics() {
           {t('analytics.title', 'Geotechnical Telemetry & Anomaly Analysis')}
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-          {t(
-            'analytics.subtitle',
-            '12-Month rainfall vs soil moisture correlation across Dima Hasao hill slopes'
-          )}
+          {activeScopeName !== 'NER'
+            ? `12-Month geotechnical telemetry & rainfall correlation across ${activeScopeName} hill slopes`
+            : t('analytics.subtitle', '12-Month rainfall vs soil moisture correlation across NER hill slopes')}
         </p>
       </div>
 
@@ -79,15 +147,15 @@ export default function Analytics() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-            <span>{t('analytics.stat_avg_rain', 'District 72h Avg Rain')}</span>
+            <span>{activeScopeName !== 'NER' ? `${activeScopeName} 72h Avg Rain` : t('analytics.stat_avg_rain', 'District 72h Avg Rain')}</span>
             <CloudRain className="w-4 h-4 text-amber-500" />
           </div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
-            {summary?.avg_72h_rainfall_mm || '142.4'} mm
+            {metrics.avgRain} mm
           </div>
           <div className="text-[11px] text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1 font-medium">
             <TrendingUp className="w-3 h-3" />
-            <span>+38% vs baseline threshold</span>
+            <span>Telemetry calibrated</span>
           </div>
         </div>
 
@@ -97,10 +165,10 @@ export default function Analytics() {
             <Droplets className="w-4 h-4 text-sky-500" />
           </div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
-            {summary?.avg_soil_moisture_pct || '63.8'} %
+            {metrics.avgMoisture} %
           </div>
           <div className="text-[11px] text-sky-600 dark:text-sky-400 mt-1 font-medium">
-            Critical shear limits breached in steep cuts
+            Pore pressure sensors active
           </div>
         </div>
 
@@ -110,10 +178,10 @@ export default function Analytics() {
             <AlertTriangle className="w-4 h-4 text-rose-500" />
           </div>
           <div className="text-2xl font-extrabold text-rose-600 dark:text-rose-400 mt-1">
-            {summary?.alert_level || 'ORANGE ALERT'}
+            {metrics.alertLevel}
           </div>
           <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-medium">
-            NH-27 & NH-6 active road watch
+            {activeScopeName !== 'NER' ? `${activeScopeName} DDMA Command` : 'NER Corridor Watch'}
           </div>
         </div>
 
@@ -123,11 +191,11 @@ export default function Analytics() {
             <Mountain className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">
-            31 Settlements
+            {metrics.totalCount} Settlements
           </div>
           <div className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1 font-medium">
             <CheckCircle2 className="w-3 h-3" />
-            <span>Assam & Meghalaya synced</span>
+            <span>{activeScopeName !== 'NER' ? `${activeScopeName} Jurisdiction` : 'NER Synced'}</span>
           </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import CitizenAIChatbot from '../../components/CitizenAIChatbot';
+import { addRegisteredCitizen } from '../../utils/citizenDatabase';
 import {
   User,
   Phone,
@@ -221,14 +223,21 @@ export default function CitizenAuth() {
       phone: cleanPhone,
       email: signupEmail.trim(),
       password: signupPassword,
-      district: signupDistrict,
-      village: signupVillage.trim() || 'Hill Corridor Settlement',
+      district: 'Dima Hasao',
+      village: 'Hill Corridor Settlement',
       authMethod: 'registration',
       registeredAt: new Date().toISOString()
     };
 
     const updatedDb = [newUser, ...db];
     saveCitizensDb(updatedDb);
+    addRegisteredCitizen({
+      name: newUser.name,
+      mobile_number: newUser.phone,
+      district: newUser.district,
+      assigned_village: newUser.village,
+      state: newUser.district === 'Gangtok' ? 'Sikkim' : (newUser.district === 'East Khasi Hills' ? 'Meghalaya' : 'Assam')
+    });
 
     // Set active session
     const sessionUser = {
@@ -654,36 +663,6 @@ export default function CitizenAuth() {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                    District
-                  </label>
-                  <select
-                    value={signupDistrict}
-                    onChange={(e) => setSignupDistrict(e.target.value)}
-                    className="w-full px-2.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-rose-500 transition"
-                  >
-                    <option value="Dima Hasao">Dima Hasao (Assam)</option>
-                    <option value="Kamrup">Kamrup Metro (Assam)</option>
-                    <option value="East Khasi Hills">East Khasi Hills (Meghalaya)</option>
-                    <option value="Ri-Bhoi">Ri-Bhoi (Meghalaya)</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                    Village / Locality
-                  </label>
-                  <input
-                    type="text"
-                    value={signupVillage}
-                    onChange={(e) => setSignupVillage(e.target.value)}
-                    placeholder="E.g. Jatinga"
-                    className="w-full px-2.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-rose-500 transition"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Password *
                   </label>
                   <input
@@ -1012,6 +991,7 @@ export default function CitizenAuth() {
           </div>
         </div>
       )}
+      <CitizenAIChatbot />
     </div>
   );
 }

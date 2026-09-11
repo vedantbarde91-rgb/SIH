@@ -13,6 +13,7 @@ import Analytics from './pages/officer/Analytics';
 import ReportsReview from './pages/officer/ReportsReview';
 import HistoryView from './pages/officer/HistoryView';
 import { authService } from './firebase/authService';
+import { DistrictProvider } from './context/DistrictContext';
 
 // Layout wrapper for Officer Portal (Sidebar + Outlet)
 function OfficerLayout() {
@@ -36,36 +37,39 @@ function OfficerLayout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-        <Navbar />
-        <div className="flex-1">
-          <Routes>
-            {/* Landing Door */}
-            <Route path="/" element={<Landing />} />
+      <DistrictProvider>
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+          <Navbar />
+          <div className="flex-1">
+            <Routes>
+              {/* Landing Door */}
+              <Route path="/" element={<Landing />} />
 
-            {/* Citizen Portal (Guest & Logged-in Auth) */}
-            <Route path="/report" element={<ReportForm />} />
-            <Route path="/user/auth" element={<CitizenAuth />} />
-            <Route path="/user/dashboard" element={<UserDashboard />} />
+              {/* Citizen Portal (Guest & Logged-in Auth) */}
+              <Route path="/report" element={<ReportForm />} />
+              <Route path="/user/auth" element={<CitizenAuth />} />
+              <Route path="/user/dashboard" element={<UserDashboard />} />
 
-            {/* Officer Login */}
-            <Route path="/officer/login" element={<OfficerLogin />} />
+              {/* Officer Login */}
+              <Route path="/officer/login" element={<OfficerLogin />} />
 
-            {/* Officer Scoped Dashboard */}
-            <Route path="/officer" element={<OfficerLayout />}>
-              <Route index element={<Navigate to="/officer/map" replace />} />
-              <Route path="map" element={<MapView />} />
-              <Route path="list" element={<ListView />} />
-              <Route path="analytics" element={<Analytics />} />
-              <Route path="reports" element={<ReportsReview />} />
-              <Route path="history" element={<HistoryView />} />
-            </Route>
+              {/* Officer Scoped Dashboard */}
+              <Route path="/officer" element={<OfficerLayout />}>
+                <Route index element={<Navigate to="/officer/map" replace />} />
+                <Route path="map" element={<MapView />} />
+                <Route path="list" element={<ListView />} />
+                <Route path="villages" element={<ListView />} />
+                <Route path="analytics" element={<Analytics />} />
+                <Route path="reports" element={<ReportsReview />} />
+                <Route path="history" element={<HistoryView />} />
+              </Route>
 
-            {/* Catch-all redirect */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              {/* Catch-all redirect */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      </DistrictProvider>
     </BrowserRouter>
   );
 }

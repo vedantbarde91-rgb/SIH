@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { authService } from '../../firebase/authService';
+import { useDistrict } from '../../context/DistrictContext';
 import {
   History,
   Calendar,
@@ -282,34 +283,16 @@ const NER_DISASTER_HISTORY = [
 
 export default function HistoryView() {
   const { t } = useTranslation();
-  const currentOfficer = authService.getCurrentOfficer();
-
-  // Scoped Authority Logic
-  const isSuperAdmin = currentOfficer?.role?.toLowerCase().includes('super') || currentOfficer?.jurisdiction === 'ALL';
-  const officerAssignedDistrict = currentOfficer?.jurisdiction && currentOfficer.jurisdiction !== 'ALL'
-    ? currentOfficer.jurisdiction
-    : null;
-
-  const initialAssignedState = officerAssignedDistrict === 'Gangtok'
-    ? 'Sikkim'
-    : (officerAssignedDistrict === 'East Khasi Hills' || officerAssignedDistrict === 'Ri-Bhoi'
-      ? 'Meghalaya'
-      : (officerAssignedDistrict ? 'Assam' : 'ALL'));
+  const {
+    selectedState,
+    selectedDistrict,
+    officerAssignedDistrict,
+    isSuperAdmin
+  } = useDistrict();
 
   // Filters State
-  const [selectedState, setSelectedState] = useState(initialAssignedState);
-  const [selectedDistrict, setSelectedDistrict] = useState(officerAssignedDistrict || 'ALL');
   const [selectedYear, setSelectedYear] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Available Districts depending on state
-  const availableDistricts = useMemo(() => {
-    if (officerAssignedDistrict) return [officerAssignedDistrict];
-    if (selectedState === 'Assam') return ['Dima Hasao', 'Kamrup'];
-    if (selectedState === 'Meghalaya') return ['East Khasi Hills', 'Ri-Bhoi'];
-    if (selectedState === 'Sikkim') return ['Gangtok'];
-    return ['Dima Hasao', 'East Khasi Hills', 'Gangtok', 'Ri-Bhoi', 'Kamrup'];
-  }, [selectedState, officerAssignedDistrict]);
 
   // Dynamically extract all recorded years from historical dataset
   const availableYears = useMemo(() => {
@@ -378,7 +361,7 @@ export default function HistoryView() {
           ) : (
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/60 border border-purple-300 dark:border-purple-800 text-purple-800 dark:text-purple-200 text-xs font-semibold shadow-sm">
               <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />
-              <span>Super Administrator Scope: <strong>Multi-State NER View</strong></span>
+              <span>Active Scope: <strong>{selectedDistrict !== 'ALL' ? selectedDistrict : (selectedState !== 'ALL' ? selectedState : 'Multi-State NER View')}</strong></span>
             </div>
           )}
         </div>
@@ -442,61 +425,13 @@ export default function HistoryView() {
       {/* FILTER & SEARCH CONTROL BAR */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-3 transition-colors">
         <div className="flex flex-wrap items-center gap-3">
-          
-          {/* State Selector */}
-          <div className="flex items-center gap-1.5 text-xs font-semibold">
-            <span className="text-slate-500">State:</span>
-            {officerAssignedDistrict ? (
-              <span className="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
-                <Lock className="w-3 h-3 text-slate-400" />
-                <span>{initialAssignedState}</span>
-              </span>
-            ) : (
-              <select
-                value={selectedState}
-                onChange={(e) => {
-                  setSelectedState(e.target.value);
-                  setSelectedDistrict('ALL');
-                }}
-                className="px-2.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
-              >
-                <option value="ALL">All States (NER)</option>
-                <option value="Assam">Assam</option>
-                <option value="Meghalaya">Meghalaya</option>
-                <option value="Sikkim">Sikkim</option>
-              </select>
-            )}
-          </div>
-
-          {/* District Selector */}
-          <div className="flex items-center gap-1.5 text-xs font-semibold">
-            <span className="text-slate-500">District:</span>
-            {officerAssignedDistrict ? (
-              <span className="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center gap-1">
-                <Lock className="w-3 h-3 text-slate-400" />
-                <span>{officerAssignedDistrict}</span>
-              </span>
-            ) : (
-              <select
-                value={selectedDistrict}
-                onChange={(e) => setSelectedDistrict(e.target.value)}
-                className="px-2.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
-              >
-                <option value="ALL">All Districts</option>
-                {availableDistricts.map((d) => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
-              </select>
-            )}
-          </div>
-
           {/* Year Selector */}
           <div className="flex items-center gap-1.5 text-xs font-semibold">
-            <span className="text-slate-500">Year:</span>
+            <span className="text-slate-500">Filter by Year:</span>
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(e.target.value)}
-              className="px-2.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-indigo-500"
+              className="px-2.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-indigo-500 font-medium"
             >
               <option value="ALL">All Recorded Years</option>
               {availableYears.map((yr) => (
