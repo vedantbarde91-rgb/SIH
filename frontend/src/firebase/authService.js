@@ -90,14 +90,42 @@ export const authService = {
 
     // 3. Fallback for prototyping if user enters any credentials with @
     if (email && email.includes("@")) {
+      const lower = email.toLowerCase();
+      let state = "Assam";
+      let jurisdiction = "Dima Hasao";
+      let role = "Assam District Officer (Dima Hasao)";
+      let zone = "NH-27 Lumding-Badarpur Corridor";
+
+      if (lower.includes("super") || lower.includes("admin") || lower.includes("regional")) {
+        state = "ALL";
+        jurisdiction = "ALL";
+        role = "Super Administrator (All States / Full Regional View)";
+        zone = "All 8 NER States & Pilot Corridors";
+      } else if (lower.includes("sikkim") || lower.includes("gangtok")) {
+        state = "Sikkim";
+        jurisdiction = "Gangtok";
+        role = "Sikkim District Officer (Gangtok)";
+        zone = "NH-10 & Gangtok Ridge Corridor";
+      } else if (lower.includes("meghalaya") || lower.includes("khasi") || lower.includes("sohra")) {
+        state = "Meghalaya";
+        jurisdiction = "East Khasi Hills";
+        role = "Meghalaya District Officer (East Khasi Hills)";
+        zone = "Shillong-Sohra-Dawki Highway Corridor";
+      } else if (lower.includes("kamrup") || lower.includes("guwahati")) {
+        state = "Assam";
+        jurisdiction = "Kamrup";
+        role = "Assam District Officer (Kamrup)";
+        zone = "Guwahati Metropolitan Slopes";
+      }
+
       const fallbackOfficer = {
         email,
         name: email.split("@")[0].replace(".", " ").toUpperCase(),
-        role: "District Response Officer",
-        jurisdiction: "Dima Hasao",
-        state: "Assam",
-        zone: "Central Corridor",
-        badgeNumber: "AS-PROTOTYPE-01"
+        role,
+        jurisdiction,
+        state,
+        zone,
+        badgeNumber: `OF-${Math.floor(1000 + Math.random() * 9000)}`
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(fallbackOfficer));
       return fallbackOfficer;

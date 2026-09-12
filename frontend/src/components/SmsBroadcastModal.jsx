@@ -15,6 +15,7 @@ import {
   Lock
 } from 'lucide-react';
 import { getRegisteredCitizens, getCitizensByDistrict } from '../utils/citizenDatabase';
+import { EMERGENCY_SMS_CONFIG } from '../config/emergencyContacts';
 
 export default function SmsBroadcastModal({ isOpen, onClose, village }) {
   if (!isOpen || !village) return null;
@@ -36,7 +37,7 @@ export default function SmsBroadcastModal({ isOpen, onClose, village }) {
   const riskScore = village.risk_percentage || village.risk_score || 85;
   const rain72h = village.rainfall_72h_mm || 187;
 
-  // Retrieve recipients based on scope
+  // Retrieve recipients based on scope and inject designated team contact numbers
   const allCitizens = getRegisteredCitizens();
   const districtCitizens = getCitizensByDistrict(district);
   const villageCitizens = districtCitizens.filter(
@@ -44,12 +45,26 @@ export default function SmsBroadcastModal({ isOpen, onClose, village }) {
            villageName.toLowerCase().includes((c.assigned_village || '').toLowerCase())
   );
 
-  const targetList = broadcastScope === 'village'
-    ? (villageCitizens.length > 0 ? villageCitizens : districtCitizens.slice(0, 4))
-    : (broadcastScope === 'district' ? districtCitizens : allCitizens);
+  // Designated team test numbers from config/emergencyContacts.js
+  const teamMemberDistrict = {
+    name: 'Team Officer (Primary DDMA)',
+    mobile_number: EMERGENCY_SMS_CONFIG.districtOfficerNumber, // 7499246109
+    assigned_village: `${district} Operations Desk`
+  };
+  const teamMemberNER = {
+    name: 'Team Officer (Regional SEOC)',
+    mobile_number: EMERGENCY_SMS_CONFIG.nerRegionalOfficerNumber, // 9356374732
+    assigned_village: 'NER Inter-State Coordination'
+  };
 
-  // Default CAP template message
-  const defaultTemplate = `[DISASTER ALERT - SDMA NER] ⚠️ CRITICAL LANDSLIDE ADVISORY: Imminent slope failure detected at ${villageName} (${district}). 72h Rain: ${rain72h}mm. Risk: ${riskScore}%. Immediate evacuation recommended to nearest SDMA shelter. Dial 1070 / 1077 for emergency assistance.`;
+  const targetList = broadcastScope === 'village'
+    ? [teamMemberDistrict, ...(villageCitizens.length > 0 ? villageCitizens : districtCitizens.slice(0, 3))]
+    : (broadcastScope === 'district'
+        ? [teamMemberDistrict, ...districtCitizens]
+        : [teamMemberDistrict, teamMemberNER, ...allCitizens]);
+
+  // Default CAP template message with 112 helpline
+  const defaultTemplate = `[DISASTER ALERT - SDMA NER] ⚠️ CRITICAL LANDSLIDE ADVISORY: Imminent slope failure detected at ${villageName} (${district}). 72h Rain: ${rain72h}mm. Risk: ${riskScore}%. Immediate evacuation recommended to nearest SDMA shelter. Dial 112 for 24x7 Emergency Assistance.`;
 
   useEffect(() => {
     setCustomMsg(defaultTemplate);
@@ -84,15 +99,19 @@ export default function SmsBroadcastModal({ isOpen, onClose, village }) {
       setIsSending(false);
       setSentSuccess(true);
 
-      const logs = targetList.map((c, i) => ({
-        id: `LOG-${Date.now()}-${i}`,
-        recipient: c.name,
-        maskedMobile: c.mobile_number ? `+91 ${c.mobile_number.slice(0, 5)}***${c.mobile_number.slice(-2)}` : '+91 98*** ***10',
-        village: c.assigned_village || villageName,
-        status: 'DELIVERED',
-        gatewayRef: `DLT-${Math.floor(100000 + Math.random() * 900000)}`,
-        timestamp: new Date().toLocaleTimeString()
-      }));
+      const logs = targetList.map((c, i) => {
+        const isTeamNumber = c.mobile_number === EMERGENCY_SMS_CONFIG.districtOfficerNumber || 
+                             c.mobile_number === EMERGENCY_SMS_CONFIG.nerRegionalOfficerNumber;
+        return {
+          id: `LOG-${Date.now()}-${i}`,
+          recipient: c.name,
+          maskedMobile: isTeamNumber ? `+91 ${c.mobile_number} (Team Direct)` : (c.mobile_number ? `+91 ${c.mobile_number.slice(0, 5)}***${c.mobile_number.slice(-2)}` : '+91 98*** ***10'),
+          village: c.assigned_village || villageName,
+          status: 'DELIVERED',
+          gatewayRef: `DLT-${Math.floor(100000 + Math.random() * 900000)}`,
+          timestamp: new Date().toLocaleTimeString()
+        };
+      });
       setDispatchLogs(logs);
     }, 3100);
   };
@@ -180,6 +199,19 @@ export default function SmsBroadcastModal({ isOpen, onClose, village }) {
                 <div className="font-bold truncate">All NER Pilot Contacts</div>
                 <div className="text-[11px] text-slate-400 mt-0.5">Assam, Meghalaya, Sikkim</div>
               </button>
+            </div>
+
+            {/* Prototype Relay Phone Numbers Badge */}
+            <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-900 dark:text-amber-200 flex items-center justify-between">
+              <span className="font-semibold flex items-center gap-1.5">
+                <Smartphone className="w-3.5 h-3.5 text-amber-600" />
+                <span>Configured Team Relay Numbers:</span>
+              </span>
+              <span className="font-mono text-[10px] font-bold">
+                {broadcastScope === 'all' 
+                  ? `${EMERGENCY_SMS_CONFIG.districtOfficerNumber} & ${EMERGENCY_SMS_CONFIG.nerRegionalOfficerNumber}` 
+                  : `${EMERGENCY_SMS_CONFIG.districtOfficerNumber} (Primary Officer)`}
+              </span>
             </div>
           </div>
 

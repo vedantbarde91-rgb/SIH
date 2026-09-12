@@ -33,22 +33,22 @@ const CHATBOT_LANGUAGES = [
 
 const EMERGENCY_FAQ = {
   en: [
-    { q: 'What should I do during a landslide?', a: '1. Move away from the path of the landslide or debris flow immediately.\n2. Stay alert for unusual sounds like trees cracking or boulders knocking.\n3. Avoid river valleys and low-lying drainage channels.\n4. Call State Emergency Helpline 1070 or District 1077.' },
+    { q: 'What should I do during a landslide?', a: '1. Move away from the path of the landslide or debris flow immediately.\n2. Stay alert for unusual sounds like trees cracking or boulders knocking.\n3. Avoid river valleys and low-lying drainage channels.\n4. Call National Emergency Helpline 112.' },
     { q: 'Where are the nearest relief camps?', a: 'Active evacuation shelters in pilot corridors:\n• Dima Hasao: Haflong Government College & Maibang Town Hall.\n• East Khasi Hills: Cherrapunji Multipurpose Cyclone Shelter.\n• Gangtok: Singtam Community Hall & Ranipool School.' },
     { q: 'How do I report a hazard?', a: 'Simply tell me in your own words, e.g., "Huge mudflow blocking NH-27 near Jatinga" or "Cracks on slope at Cherrapunji", and I will extract the details and file your official report!' }
   ],
   hi: [
-    { q: 'भूस्खलन के दौरान क्या करें?', a: '1. तुरंत भूस्खलन या मलबे के बहाव के रास्ते से दूर हटें।\n2. पेड़ों के टूटने या पत्थरों के टकराने जैसी असामान्य आवाजों के प्रति सतर्क रहें।\n3. नदी घाटियों और निचले जल निकासी नालों से दूर रहें।\n4. राज्य आपातकालीन हेल्पलाइन 1070 या जिला 1077 पर कॉल करें।' },
+    { q: 'भूस्खलन के दौरान क्या करें?', a: '1. तुरंत भूस्खलन या मलबे के बहाव के रास्ते से दूर हटें।\n2. पेड़ों के टूटने या पत्थरों के टकराने जैसी असामान्य आवाजों के प्रति सतर्क रहें।\n3. नदी घाटियों और निचले जल निकासी नालों से दूर रहें।\n4. राष्ट्रीय आपातकालीन हेल्पलाइन 112 पर कॉल करें।' },
     { q: 'निकटतम राहत शिविर कहाँ हैं?', a: 'सक्रिय राहत शिविर:\n• दीमा हसाओ: हाफलोंग गवर्नमेंट कॉलेज और माईबोंग टाउन हॉल।\n• ईस्ट खासी हिल्स: चेरापूंजी बहुउद्देशीय आश्रय।\n• गंगटोक: सिंगतम कम्युनिटी हॉल और रानीपूल स्कूल।' },
     { q: 'खतरे की रिपोर्ट कैसे दर्ज करें?', a: 'बस मुझे अपनी भाषा में बताएं, जैसे: "जतिंगा के पास NH-27 पर भारी भूस्खलन हुआ है", और मैं तुरंत रिपोर्ट तैयार कर दूंगा।' }
   ],
   mr: [
-    { q: 'दरड कोसळल्यास काय करावे?', a: '1. तात्काळ ढिगाऱ्याच्या मार्गावरून सुरक्षित ठिकाणी जा.\n2. झाडे मोडणे किंवा दगड कोसळण्याच्या आवाजाकडे लक्ष द्या.\n3. नदीच्या खोऱ्यात व सखल भागात थांबू नका.\n4. आपत्कालीन हेल्पलाईन 1070 किंवा 1077 वर संपर्क साधा.' },
+    { q: 'दरड कोसळल्यास काय करावे?', a: '1. तात्काळ ढिगाऱ्याच्या मार्गावरून सुरक्षित ठिकाणी जा.\n2. झाडे मोडणे किंवा दगड कोसळण्याच्या आवाजाकडे लक्ष द्या.\n3. नदीच्या खोऱ्यात व सखल भागात थांबू नका.\n4. राष्ट्रीय आपत्कालीन हेल्पलाईन 112 वर संपर्क साधा.' },
     { q: 'जवळचे मदत केंद्र कोठे आहे?', a: 'सक्रिय निवारा केंद्र:\n• दिमा हासाओ: हाफलाँग कॉलेज आणि मायबोंग टाऊन हॉल.\n• ईस्ट खासी हिल्स: चेरापुंजी बहुउद्देशीय केंद्र.\n• गंगटोक: सिंगतम कम्युनिटी हॉल.' },
     { q: 'धोक्याची तक्रार कशी करावी?', a: 'फक्त मला सांगा, उदा. "जतिंगाजवळ रस्त्यावर मातीचा भराव कोसळला आहे", मी त्वरित अधिकृत नोंदणी करेन!' }
   ],
   as: [
-    { q: 'ভূমিস্খলন হ’লে কি কৰিব লাগে?', a: '১. ভূমিস্খলন বা বোকা বৈ যোৱা পথৰ পৰা তাৎক্ষণিকভাৱে আঁতৰি যাওক।\n২. গছ ভগা বা শিল বগৰি অহাৰ শব্দ শুনিলে সাৱধান হওক।\n৩. নদীৰ উপত্যকা আৰু দ নলাৰ ওচৰলৈ নাযাব।\n৪. ৰাজ্যিক হেল্পলাইন ১০৭০ বা জিলা ১০৭৭ নম্বৰত যোগাযোগ কৰক।' },
+    { q: 'ভূমিস্খলন হ’লে কি কৰিব লাগে?', a: '১. ভূমিস্খলন বা বোকা বৈ যোৱা পথৰ পৰা তাৎক্ষণিকভাৱে আঁতৰি যাওক।\n২. গছ ভগা বা শিল বগৰি অহাৰ শব্দ শুনিলে সাৱধান হওক।\n৩. নদীৰ উপত্যকা আৰু দ নলাৰ ওচৰলৈ নাযাব।\n৪. ৰাষ্ট্ৰীয় জৰুৰীকালীন হেল্পলাইন ১১২ নম্বৰত যোগাযোগ কৰক।' },
     { q: 'ওচৰৰ আশ্ৰয় শিবিৰ ক’ত আছে?', a: 'সক্ৰিয় সাহায্য শিবিৰ:\n• ডিমা হাছাও: হাফলং চৰকাৰী মহাবিদ্যালয় আৰু মাইবং টাউন হল।\n• ইষ্ট খাছি হিলছ: চেৰাপুঞ্জী বহুমুখী আশ্ৰয় কেন্দ্ৰ।\n• গেংটক: ছিংটাম কমিউনিটি হল।' },
     { q: 'বিপদৰ বিষয়ে কেনেকৈ প্ৰতিবেদন দিম?', a: 'আপুনি মোক লিখি বা কৈ দিয়ক, যেনে: "জাতিংগাৰ ওচৰত NH-27 ত ভূমিস্খলন হৈছে", মই লগে লগে প্ৰতিবেদন জমা কৰিম!' }
   ]
@@ -196,7 +196,7 @@ export default function CitizenAIChatbot() {
     };
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e?.preventDefault();
     if (!inputVal.trim()) return;
 
@@ -210,7 +210,44 @@ export default function CitizenAIChatbot() {
     setMessages((prev) => [...prev, userMsg]);
     setInputVal('');
 
-    // Process parsing
+    // Try backend AI Chatbot endpoint first (/api/chatbot/chat)
+    try {
+      const historyPayload = messages.slice(-6).map(m => ({
+        sender: m.sender,
+        text: m.text
+      }));
+
+      const aiResponse = await apiClient.chatWithAssistant(userText, selectedLang, historyPayload);
+
+      if (aiResponse && (aiResponse.reply || aiResponse.parsed_report || aiResponse.hazard_report)) {
+        const report = aiResponse.parsed_report || aiResponse.hazard_report;
+        if (report) {
+          setPendingReport(report);
+          const botReply = {
+            id: Date.now() + 1,
+            sender: 'bot',
+            text: aiResponse.reply || `I have identified and structured a hazard report from your description. Please review and confirm below:`,
+            isReportPreview: true,
+            reportData: report,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          };
+          setMessages((prev) => [...prev, botReply]);
+        } else {
+          const botReply = {
+            id: Date.now() + 1,
+            sender: 'bot',
+            text: aiResponse.reply,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          };
+          setMessages((prev) => [...prev, botReply]);
+        }
+        return;
+      }
+    } catch (err) {
+      console.warn('AI chatbot API call error, using local fallback parser:', err);
+    }
+
+    // Local Fallback Parsing
     const parsed = parseHazardReport(userText);
 
     setTimeout(() => {
@@ -228,12 +265,18 @@ export default function CitizenAIChatbot() {
       } else {
         // General query or fallback
         const lower = userText.toLowerCase();
-        let replyText = "I received your message. For immediate emergency rescue, please dial 1070 (SDMA) or 1077 (DDMA). To file a hazard report, please specify the location and condition (e.g., 'Mudflow on NH-27 near Jatinga').";
+        let replyText = selectedLang === 'as'
+          ? "মই আপোনাৰ বাৰ্তা পালোঁ। জৰুৰীকালীন সাহায্যৰ বাবে অনুগ্ৰহ কৰি ১১২ নম্বৰত ডায়েল কৰক। বিপদৰ প্ৰতিবেদন দাখিল কৰিবলৈ স্থান আৰু অৱস্থা উল্লেখ কৰক (যেনে: 'জাতিংগাৰ ওচৰত NH-27 ত ভূমিস্খলন')।"
+          : (selectedLang === 'hi'
+            ? "मुझे आपका संदेश प्राप्त हुआ। आपातकालीन सहायता के लिए कृपया 112 पर डायल करें। रिपोर्ट दर्ज करने के लिए स्थान बताएं (उदा. 'जतिंगा के पास NH-27 पर भूस्खलन')।"
+            : (selectedLang === 'mr'
+              ? "आपत्कालीन मदतीसाठी कृपया 112 वर संपर्क साधा. धोक्याची नोंद करण्यासाठी स्थान व परिस्थिती सांगा."
+              : "I received your message. For immediate emergency rescue, please dial 112. To file a hazard report, please specify the location and condition (e.g., 'Mudflow on NH-27 near Jatinga')."));
 
         if (/help|emergency|danger/i.test(lower)) {
-          replyText = "🚨 If you are in immediate danger: move to high, stable ground away from drainage paths and dial 1070 immediately. SDRF rescue detachments are on standby.";
+          replyText = "🚨 Immediate Danger: Move immediately away from slopes and drainage channels to high ground. Call National Emergency Helpline 112 for SDRF rescue dispatch.";
         } else if (/weather|rain/i.test(lower)) {
-          replyText = "🌧️ Continuous heavy monsoon rains are ongoing across Dima Hasao, East Khasi Hills, and Gangtok. Multiple slopes have breached the 140mm antecedent precipitation threshold.";
+          replyText = "🌧️ Live Telemetry Alert: Monsoon rainfall is active across Dima Hasao, East Khasi Hills, and Gangtok. Multiple monitored slopes have breached safe saturation thresholds.";
         }
 
         const botReply = {
@@ -244,7 +287,7 @@ export default function CitizenAIChatbot() {
         };
         setMessages((prev) => [...prev, botReply]);
       }
-    }, 600);
+    }, 400);
   };
 
   const handleConfirmReport = async (reportData) => {
@@ -360,7 +403,7 @@ export default function CitizenAIChatbot() {
                   <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
                 </div>
                 <div className="text-[10px] text-slate-400 font-mono">
-                  State Emergency: 1070 / 1077
+                  National Emergency: 112
                 </div>
               </div>
             </div>
@@ -392,20 +435,14 @@ export default function CitizenAIChatbot() {
           <div className="bg-rose-500/10 dark:bg-rose-950/40 border-b border-rose-500/20 px-3 py-1.5 flex items-center justify-between text-xs">
             <div className="flex items-center gap-1.5 text-rose-700 dark:text-rose-300 font-bold text-[11px]">
               <PhoneCall className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-              <span>24x7 Helplines:</span>
+              <span>National Disaster Helpline:</span>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
               <a
-                href="tel:1070"
-                className="px-2 py-0.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-bold transition flex items-center gap-1"
+                href="tel:112"
+                className="px-3 py-0.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-bold transition flex items-center gap-1 shadow-sm"
               >
-                1070 (SDMA)
-              </a>
-              <a
-                href="tel:1077"
-                className="px-2 py-0.5 rounded-full bg-amber-600 hover:bg-amber-500 text-white font-bold transition flex items-center gap-1"
-              >
-                1077 (DDMA)
+                📞 Dial 112 (Toll-Free)
               </a>
             </div>
           </div>

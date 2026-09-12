@@ -1,30 +1,75 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { authService } from '../firebase/authService';
 
 const DistrictContext = createContext(null);
 
 export const STATE_DISTRICT_MAP = {
-  'Assam': ['Dima Hasao', 'Kamrup'],
-  'Meghalaya': ['East Khasi Hills', 'Ri-Bhoi'],
-  'Sikkim': ['Gangtok']
+  'Assam': [
+    'Dima Hasao',
+    'Kamrup',
+    'Cachar',
+    'Karbi Anglong',
+    'Hailakandi',
+    'Karimganj'
+  ],
+  'Meghalaya': [
+    'East Khasi Hills',
+    'Ri-Bhoi',
+    'West Khasi Hills',
+    'South West Khasi Hills',
+    'West Jaintia Hills',
+    'East Jaintia Hills',
+    'West Garo Hills',
+    'South Garo Hills'
+  ],
+  'Sikkim': [
+    'Gangtok',
+    'Mangan',
+    'Namchi',
+    'Gyalshing',
+    'Pakyong',
+    'Soreng'
+  ]
 };
 
 export const DISTRICT_TO_STATE_MAP = {
+  // Assam Districts
   'Dima Hasao': 'Assam',
   'Kamrup': 'Assam',
+  'Cachar': 'Assam',
+  'Karbi Anglong': 'Assam',
+  'Hailakandi': 'Assam',
+  'Karimganj': 'Assam',
+
+  // Meghalaya Districts
   'East Khasi Hills': 'Meghalaya',
   'Ri-Bhoi': 'Meghalaya',
-  'Gangtok': 'Sikkim'
+  'West Khasi Hills': 'Meghalaya',
+  'South West Khasi Hills': 'Meghalaya',
+  'West Jaintia Hills': 'Meghalaya',
+  'East Jaintia Hills': 'Meghalaya',
+  'West Garo Hills': 'Meghalaya',
+  'South Garo Hills': 'Meghalaya',
+
+  // Sikkim Districts
+  'Gangtok': 'Sikkim',
+  'Mangan': 'Sikkim',
+  'Namchi': 'Sikkim',
+  'Gyalshing': 'Sikkim',
+  'Pakyong': 'Sikkim',
+  'Soreng': 'Sikkim'
 };
 
 export function DistrictProvider({ children }) {
-  const currentOfficer = authService.getCurrentOfficer();
+  // Reactive officer state so auth updates trigger re-renders everywhere
+  const [currentOfficer, setCurrentOfficer] = useState(() => authService.getCurrentOfficer());
 
   // Role Scoping: Super Admin vs District Admin
   const isSuperAdmin = useMemo(() => {
     if (!currentOfficer) return true;
     const role = (currentOfficer.role || '').toLowerCase();
-    return role.includes('super') || currentOfficer.jurisdiction === 'ALL';
+    const juris = (currentOfficer.jurisdiction || '').toUpperCase();
+    return role.includes('super') || juris === 'ALL';
   }, [currentOfficer]);
 
   const officerAssignedDistrict = useMemo(() => {
@@ -33,13 +78,21 @@ export function DistrictProvider({ children }) {
   }, [currentOfficer]);
 
   const officerAssignedState = useMemo(() => {
-    if (!officerAssignedDistrict) return null;
-    return DISTRICT_TO_STATE_MAP[officerAssignedDistrict] || (currentOfficer.state || 'Assam');
+    if (!officerAssignedDistrict) {
+      if (currentOfficer && currentOfficer.state && currentOfficer.state !== 'ALL') {
+        return currentOfficer.state;
+      }
+      return null;
+    }
+    return DISTRICT_TO_STATE_MAP[officerAssignedDistrict] || (currentOfficer?.state || 'Assam');
   }, [officerAssignedDistrict, currentOfficer]);
 
-  // Persistent initial state
+  // Selected State
   const [selectedState, setSelectedState] = useState(() => {
-    if (officerAssignedState) return officerAssignedState;
+    const officer = authService.getCurrentOfficer();
+    if (officer && officer.jurisdiction && officer.jurisdiction !== 'ALL') {
+      return DISTRICT_TO_STATE_MAP[officer.jurisdiction] || officer.state || 'Assam';
+    }
     try {
       return localStorage.getItem('ner_global_selected_state') || 'ALL';
     } catch {
@@ -47,8 +100,12 @@ export function DistrictProvider({ children }) {
     }
   });
 
+  // Selected District
   const [selectedDistrict, setSelectedDistrict] = useState(() => {
-    if (officerAssignedDistrict) return officerAssignedDistrict;
+    const officer = authService.getCurrentOfficer();
+    if (officer && officer.jurisdiction && officer.jurisdiction !== 'ALL') {
+      return officer.jurisdiction;
+    }
     try {
       return localStorage.getItem('ner_global_selected_district') || 'ALL';
     } catch {
@@ -56,15 +113,20 @@ export function DistrictProvider({ children }) {
     }
   });
 
-  // Sync when officer jurisdiction changes
+  // Keep state synchronized whenever currentOfficer changes
   useEffect(() => {
-    if (officerAssignedDistrict) {
-      setSelectedDistrict(officerAssignedDistrict);
-      if (officerAssignedState) {
-        setSelectedState(officerAssignedState);
+    if (currentOfficer) {
+      if (currentOfficer.jurisdiction && currentOfficer.jurisdiction !== 'ALL') {
+        setSelectedDistrict(currentOfficer.jurisdiction);
+        const mappedState = DISTRICT_TO_STATE_MAP[currentOfficer.jurisdiction] || currentOfficer.state || 'Assam';
+        setSelectedState(mappedState);
+      } else {
+        // Super Admin default
+        setSelectedState('ALL');
+        setSelectedDistrict('ALL');
       }
     }
-  }, [officerAssignedDistrict, officerAssignedState]);
+  }, [currentOfficer]);
 
   // Persist for Super Admin
   useEffect(() => {
@@ -80,11 +142,14 @@ export function DistrictProvider({ children }) {
 
   // Available districts based on selectedState
   const availableDistricts = useMemo(() => {
-    if (officerAssignedDistrict) return [officerAssignedDistrict];
-    if (selectedState === 'Assam') return STATE_DISTRICT_MAP['Assam'];
-    if (selectedState === 'Meghalaya') return STATE_DISTRICT_MAP['Meghalaya'];
-    if (selectedState === 'Sikkim') return STATE_DISTRICT_MAP['Sikkim'];
-    return ['Dima Hasao', 'East Khasi Hills', 'Gangtok', 'Kamrup', 'Ri-Bhoi'];
+    if (officerAssignedDistrict) {
+      return [officerAssignedDistrict];
+    }
+    if (selectedState && STATE_DISTRICT_MAP[selectedState]) {
+      return STATE_DISTRICT_MAP[selectedState];
+    }
+    // ALL selected -> aggregate all districts
+    return Object.values(STATE_DISTRICT_MAP).flat();
   }, [selectedState, officerAssignedDistrict]);
 
   // Handlers for state and district changes
@@ -109,6 +174,35 @@ export function DistrictProvider({ children }) {
     }
   };
 
+  // Synchronous Reactive Login
+  const loginOfficer = useCallback(async (email, password) => {
+    const officer = await authService.login(email, password);
+    setCurrentOfficer(officer);
+    if (officer.jurisdiction && officer.jurisdiction !== 'ALL') {
+      const mappedState = DISTRICT_TO_STATE_MAP[officer.jurisdiction] || officer.state || 'Assam';
+      setSelectedState(mappedState);
+      setSelectedDistrict(officer.jurisdiction);
+    } else {
+      setSelectedState('ALL');
+      setSelectedDistrict('ALL');
+    }
+    return officer;
+  }, []);
+
+  // Synchronous Reactive Logout
+  const logoutOfficer = useCallback(() => {
+    authService.logout();
+    setCurrentOfficer(null);
+    setSelectedState('ALL');
+    setSelectedDistrict('ALL');
+    try {
+      localStorage.removeItem('ner_global_selected_state');
+      localStorage.removeItem('ner_global_selected_district');
+    } catch {
+      // ignore
+    }
+  }, []);
+
   const value = {
     selectedState,
     selectedDistrict,
@@ -120,7 +214,9 @@ export function DistrictProvider({ children }) {
     isSuperAdmin,
     officerAssignedDistrict,
     officerAssignedState,
-    currentOfficer
+    currentOfficer,
+    loginOfficer,
+    logoutOfficer
   };
 
   return (

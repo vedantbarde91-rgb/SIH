@@ -13,13 +13,13 @@ import Analytics from './pages/officer/Analytics';
 import ReportsReview from './pages/officer/ReportsReview';
 import HistoryView from './pages/officer/HistoryView';
 import { authService } from './firebase/authService';
-import { DistrictProvider } from './context/DistrictContext';
+import { DistrictProvider, useDistrict } from './context/DistrictContext';
 
 // Layout wrapper for Officer Portal (Sidebar + Outlet)
 function OfficerLayout() {
-  const currentOfficer = authService.getCurrentOfficer();
+  const { currentOfficer } = useDistrict();
 
-  // If not logged in, we still allow viewing in prototype demo mode or redirect to login
+  // If not logged in, redirect to login
   if (!currentOfficer) {
     return <Navigate to="/officer/login" replace />;
   }

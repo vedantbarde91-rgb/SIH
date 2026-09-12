@@ -5618,5 +5618,1139 @@
         "countermeasures": "SDRF permanent telemetry relay station established; reinforced concrete retaining walls erected."
       }
     ]
+  },
+  {
+    "id": "VIL-036",
+    "name": "Kamakhya Hill Incline",
+    "subdivision": "Guwahati",
+    "district": "Kamrup",
+    "state": "Assam",
+    "lat": 26.1664,
+    "lon": 91.7052,
+    "elevation_m": 310,
+    "slope_deg": 38.5,
+    "rainfall_72h_mm": 164.0,
+    "soil_moisture_pct": 74.5,
+    "risk_score": 76,
+    "risk_percentage": 76.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Dense urban slope cutting along Kamakhya temple access roads",
+      "Saturated gneissic weathered overburden exceeding 150mm threshold",
+      "Inadequate stormwater surface drainage on steep northern face"
+    ],
+    "suggested_action": "Restrict vehicular ascent during red alerts; deploy municipal quick response clearing units.",
+    "weather_forecast": {
+      "temperature_c": 26.2,
+      "rainfall_24h_mm": 52.0,
+      "rainfall_7d_mm": 180.0,
+      "humidity_pct": 88,
+      "wind_speed_kmh": 14.0,
+      "condition": "Continuous Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Kamakhya Access Culvert #2"
+      ],
+      "power_lines": [
+        "33kV Feeder Substation Link"
+      ],
+      "hospitals": [
+        "Gauhati Medical College Hospital (7km)"
+      ],
+      "telecom_towers": [
+        "Airtel 4G Mast"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2023",
+        "date": "14 June 2023",
+        "type": "Debris Slide",
+        "rainfall": "140 mm (24h)",
+        "damage": "Temple road blocked for 18h",
+        "countermeasures": "Concrete retaining wall"
+      }
+    ]
+  },
+  {
+    "id": "VIL-037",
+    "name": "Lakhipur River Incline",
+    "subdivision": "Lakhipur",
+    "district": "Cachar",
+    "state": "Assam",
+    "lat": 24.7952,
+    "lon": 93.0124,
+    "elevation_m": 125,
+    "slope_deg": 34.2,
+    "rainfall_72h_mm": 142.5,
+    "soil_moisture_pct": 68.0,
+    "risk_score": 64,
+    "risk_percentage": 64.0,
+    "risk_band": "High",
+    "contributing_factors": [
+      "Barak river high water level bank scouring",
+      "Saturated alluvial clay-silt terrace toe erosion",
+      "Anthropogenic encroachment on natural drainage ravines"
+    ],
+    "suggested_action": "Stage sandbag revetments along the riverbank; monitor tension fissures.",
+    "weather_forecast": {
+      "temperature_c": 27.5,
+      "rainfall_24h_mm": 44.0,
+      "rainfall_7d_mm": 160.0,
+      "humidity_pct": 91,
+      "wind_speed_kmh": 11.5,
+      "condition": "Heavy Showers"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Lakhipur Barak RCC Bridge"
+      ],
+      "power_lines": [
+        "11kV Rural Grid Line #14"
+      ],
+      "hospitals": [
+        "Lakhipur SDCH (3km)"
+      ],
+      "telecom_towers": [
+        "BSNL Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2022",
+        "date": "19 May 2022",
+        "type": "Rotational Slump",
+        "rainfall": "180 mm",
+        "damage": "Embankment road breached",
+        "countermeasures": "Boulder pitching"
+      }
+    ]
+  },
+  {
+    "id": "VIL-038",
+    "name": "Barail Southern Foothills",
+    "subdivision": "Udarbond",
+    "district": "Cachar",
+    "state": "Assam",
+    "lat": 24.9654,
+    "lon": 92.8951,
+    "elevation_m": 290,
+    "slope_deg": 41.0,
+    "rainfall_72h_mm": 195.0,
+    "soil_moisture_pct": 82.0,
+    "risk_score": 83,
+    "risk_percentage": 83.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Heavy orographic downpours on south Barail escarpment",
+      "Fractured Barail shale and sandstone fault contact",
+      "Steep highway gradient approaching Dima Hasao border"
+    ],
+    "suggested_action": "Issue transit advisory for NH-54; maintain SDRF rescue presence at base camps.",
+    "weather_forecast": {
+      "temperature_c": 25.1,
+      "rainfall_24h_mm": 68.0,
+      "rainfall_7d_mm": 210.0,
+      "humidity_pct": 94,
+      "wind_speed_kmh": 15.0,
+      "condition": "Torrential Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Kumbhirgram Link Culvert"
+      ],
+      "power_lines": [
+        "High Tension 132kV Line"
+      ],
+      "hospitals": [
+        "Silchar Medical College (19km)"
+      ],
+      "telecom_towers": [
+        "Jio Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2022",
+        "date": "16 June 2022",
+        "type": "Mudflow",
+        "rainfall": "220 mm",
+        "damage": "Highway severed 48 hours",
+        "countermeasures": "Steel netting and geo-grid"
+      }
+    ]
+  },
+  {
+    "id": "VIL-039",
+    "name": "Diphu Mountain Terrace",
+    "subdivision": "Diphu",
+    "district": "Karbi Anglong",
+    "state": "Assam",
+    "lat": 25.8451,
+    "lon": 93.4352,
+    "elevation_m": 235,
+    "slope_deg": 35.8,
+    "rainfall_72h_mm": 138.0,
+    "soil_moisture_pct": 65.5,
+    "risk_score": 62,
+    "risk_percentage": 62.0,
+    "risk_band": "High",
+    "contributing_factors": [
+      "Deforested slopes due to traditional jhum cultivation",
+      "Weathered Precambrian granite-gneiss regolith saturation",
+      "Road cutting without retaining breast walls"
+    ],
+    "suggested_action": "Clear roadside culverts and restrict heavy transport on unpaved village roads.",
+    "weather_forecast": {
+      "temperature_c": 26.8,
+      "rainfall_24h_mm": 38.0,
+      "rainfall_7d_mm": 145.0,
+      "humidity_pct": 86,
+      "wind_speed_kmh": 12.0,
+      "condition": "Moderate Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Diphu River Culvert #8"
+      ],
+      "power_lines": [
+        "Local 11kV Distribution Line"
+      ],
+      "hospitals": [
+        "Diphu Civil Hospital (4km)"
+      ],
+      "telecom_towers": [
+        "Airtel 4G Cell"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2020",
+        "date": "12 July 2020",
+        "type": "Slope Slump",
+        "rainfall": "150 mm",
+        "damage": "Damaged 2 hillside houses",
+        "countermeasures": "Bamboo check dams"
+      }
+    ]
+  },
+  {
+    "id": "VIL-040",
+    "name": "Bokajan Quarry Escarpment",
+    "subdivision": "Bokajan",
+    "district": "Karbi Anglong",
+    "state": "Assam",
+    "lat": 26.0125,
+    "lon": 93.7854,
+    "elevation_m": 210,
+    "slope_deg": 42.5,
+    "rainfall_72h_mm": 172.0,
+    "soil_moisture_pct": 77.0,
+    "risk_score": 79,
+    "risk_percentage": 79.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Steep limestone quarry cut faces prone to structural toppling",
+      "Blasting vibration induced micro-fissures in bedrock",
+      "High monsoon precipitation destabilizing upper colluvium"
+    ],
+    "suggested_action": "Halt quarry blasting operations immediately; establish exclusion zone.",
+    "weather_forecast": {
+      "temperature_c": 26.0,
+      "rainfall_24h_mm": 56.0,
+      "rainfall_7d_mm": 190.0,
+      "humidity_pct": 90,
+      "wind_speed_kmh": 16.0,
+      "condition": "Heavy Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Bokajan Mining Rail Siding Bridge"
+      ],
+      "power_lines": [
+        "Industrial 33kV Line"
+      ],
+      "hospitals": [
+        "Bokajan CHC (6km)"
+      ],
+      "telecom_towers": [
+        "BSNL Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2021",
+        "date": "28 Aug 2021",
+        "type": "Rock Topple",
+        "rainfall": "165 mm",
+        "damage": "Crushed equipment shed",
+        "countermeasures": "Terracing and wire mesh"
+      }
+    ]
+  },
+  {
+    "id": "VIL-041",
+    "name": "Lala Valley Ridge",
+    "subdivision": "Lala",
+    "district": "Hailakandi",
+    "state": "Assam",
+    "lat": 24.5521,
+    "lon": 92.5982,
+    "elevation_m": 98,
+    "slope_deg": 33.0,
+    "rainfall_72h_mm": 125.0,
+    "soil_moisture_pct": 62.0,
+    "risk_score": 55,
+    "risk_percentage": 55.0,
+    "risk_band": "High",
+    "contributing_factors": [
+      "Intense tropical rain on loose sandy-shale ridge",
+      "Waterlogged paddy drainage overflowing into hillside toe",
+      "Loose topsoil erosion on tea garden boundary"
+    ],
+    "suggested_action": "Monitor hillside tea garden access pathways; ensure culverts are desilted.",
+    "weather_forecast": {
+      "temperature_c": 28.0,
+      "rainfall_24h_mm": 32.0,
+      "rainfall_7d_mm": 130.0,
+      "humidity_pct": 89,
+      "wind_speed_kmh": 10.0,
+      "condition": "Passing Showers"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Dhaleswari River Span"
+      ],
+      "power_lines": [
+        "11kV Grid Pole #22"
+      ],
+      "hospitals": [
+        "Lala Rural Hospital (2km)"
+      ],
+      "telecom_towers": [
+        "Jio Cell Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2020",
+        "date": "02 June 2020",
+        "type": "Mudslide",
+        "rainfall": "130 mm",
+        "damage": "Blocked rural link road",
+        "countermeasures": "Drainage canal lining"
+      }
+    ]
+  },
+  {
+    "id": "VIL-042",
+    "name": "Badarpur Ghat Cliff",
+    "subdivision": "Badarpur",
+    "district": "Karimganj",
+    "state": "Assam",
+    "lat": 24.9023,
+    "lon": 92.6051,
+    "elevation_m": 88,
+    "slope_deg": 41.5,
+    "rainfall_72h_mm": 182.0,
+    "soil_moisture_pct": 81.0,
+    "risk_score": 81,
+    "risk_percentage": 81.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Near-vertical cut cliff along railway line and NH-37",
+      "High seepage pressure from upper perched water table",
+      "Historical shale collapse history during prolonged monsoon"
+    ],
+    "suggested_action": "Coordinate with Northeast Frontier Railway for cliffside watchman patrols.",
+    "weather_forecast": {
+      "temperature_c": 27.0,
+      "rainfall_24h_mm": 60.0,
+      "rainfall_7d_mm": 195.0,
+      "humidity_pct": 92,
+      "wind_speed_kmh": 14.5,
+      "condition": "Heavy Monsoon Downpour"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Badarpur Railway Track Cutting"
+      ],
+      "power_lines": [
+        "Railway Traction 25kV Line"
+      ],
+      "hospitals": [
+        "Badarpur Health Centre (1km)"
+      ],
+      "telecom_towers": [
+        "Airtel Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2022",
+        "date": "14 May 2022",
+        "type": "Rockfall",
+        "rainfall": "190 mm",
+        "damage": "Train services suspended for 2 days",
+        "countermeasures": "Rockfall netting & catch ditch"
+      }
+    ]
+  },
+  {
+    "id": "VIL-043",
+    "name": "Nongstoin River Incline",
+    "subdivision": "Nongstoin",
+    "district": "West Khasi Hills",
+    "state": "Meghalaya",
+    "lat": 25.5214,
+    "lon": 91.2678,
+    "elevation_m": 1410,
+    "slope_deg": 37.5,
+    "rainfall_72h_mm": 175.0,
+    "soil_moisture_pct": 76.0,
+    "risk_score": 73,
+    "risk_percentage": 73.0,
+    "risk_band": "High",
+    "contributing_factors": [
+      "High plateau runoff cascading into Nondei\u00f1 river gorge",
+      "Deeply weathered lateritic soil layer over granite",
+      "Unretained cut slopes along Shillong-Nongstoin highway"
+    ],
+    "suggested_action": "Inspect retaining gabions along river corridor; clear debris traps.",
+    "weather_forecast": {
+      "temperature_c": 19.5,
+      "rainfall_24h_mm": 55.0,
+      "rainfall_7d_mm": 210.0,
+      "humidity_pct": 94,
+      "wind_speed_kmh": 13.0,
+      "condition": "Dense Fog & Heavy Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Nondein River Bridge"
+      ],
+      "power_lines": [
+        "33kV Substation Feed"
+      ],
+      "hospitals": [
+        "Nongstoin Civil Hospital (3km)"
+      ],
+      "telecom_towers": [
+        "BSNL 4G Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2021",
+        "date": "10 July 2021",
+        "type": "Debris Flow",
+        "rainfall": "170 mm",
+        "damage": "Highway blocked 14 hours",
+        "countermeasures": "Concrete breast walls"
+      }
+    ]
+  },
+  {
+    "id": "VIL-044",
+    "name": "Mawkyrwat Talus Slope",
+    "subdivision": "Mawkyrwat",
+    "district": "South West Khasi Hills",
+    "state": "Meghalaya",
+    "lat": 25.3582,
+    "lon": 91.4554,
+    "elevation_m": 1560,
+    "slope_deg": 40.2,
+    "rainfall_72h_mm": 210.0,
+    "soil_moisture_pct": 84.0,
+    "risk_score": 84,
+    "risk_percentage": 84.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Extreme precipitation corridor bordering southern Meghalaya rim",
+      "High pore water pressure liquefying silty colluvium",
+      "Steep incline dropping into southern plain valleys"
+    ],
+    "suggested_action": "Deploy road clearing machinery at vulnerable bends; alert village disaster committees.",
+    "weather_forecast": {
+      "temperature_c": 18.0,
+      "rainfall_24h_mm": 75.0,
+      "rainfall_7d_mm": 260.0,
+      "humidity_pct": 96,
+      "wind_speed_kmh": 18.0,
+      "condition": "Severe Monsoon Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Mawkyrwat-Ranikor Culvert #12"
+      ],
+      "power_lines": [
+        "11kV Grid Pole"
+      ],
+      "hospitals": [
+        "Mawkyrwat CHC (2km)"
+      ],
+      "telecom_towers": [
+        "Jio Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2022",
+        "date": "18 June 2022",
+        "type": "Rockslide",
+        "rainfall": "240 mm",
+        "damage": "Isolated 4 rural settlements",
+        "countermeasures": "Tiered gabion wire walls"
+      }
+    ]
+  },
+  {
+    "id": "VIL-045",
+    "name": "Jowai Myntdu Gorge",
+    "subdivision": "Jowai",
+    "district": "West Jaintia Hills",
+    "state": "Meghalaya",
+    "lat": 25.4485,
+    "lon": 92.1952,
+    "elevation_m": 1380,
+    "slope_deg": 42.0,
+    "rainfall_72h_mm": 190.0,
+    "soil_moisture_pct": 79.5,
+    "risk_score": 82,
+    "risk_percentage": 82.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Steep V-shaped valley with high riverbed incision",
+      "Fractured Barail sandstone under heavy tectonic stress",
+      "Saturated waste disposal slopes adjacent to river loop"
+    ],
+    "suggested_action": "Restrain traffic along scenic bypass; stage excavators at vulnerable bridge approaches.",
+    "weather_forecast": {
+      "temperature_c": 20.0,
+      "rainfall_24h_mm": 62.0,
+      "rainfall_7d_mm": 220.0,
+      "humidity_pct": 93,
+      "wind_speed_kmh": 15.0,
+      "condition": "Heavy Showers"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Myntdu River Bridge"
+      ],
+      "power_lines": [
+        "Jowai Town 33kV Line"
+      ],
+      "hospitals": [
+        "Jowai District Hospital (4km)"
+      ],
+      "telecom_towers": [
+        "Airtel 4G Mast"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2023",
+        "date": "22 July 2023",
+        "type": "Slope Failure",
+        "rainfall": "195 mm",
+        "damage": "Damaged water intake pipeline",
+        "countermeasures": "Geo-textile reinforcement"
+      }
+    ]
+  },
+  {
+    "id": "VIL-046",
+    "name": "Sonapur Tunnel Escarpment",
+    "subdivision": "Khliehriat",
+    "district": "East Jaintia Hills",
+    "state": "Meghalaya",
+    "lat": 25.1145,
+    "lon": 92.3642,
+    "elevation_m": 195,
+    "slope_deg": 47.0,
+    "rainfall_72h_mm": 240.0,
+    "soil_moisture_pct": 88.0,
+    "risk_score": 92,
+    "risk_percentage": 92.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Infamous Sonapur NH-06 mudflow chute with deep shale-clay strata",
+      "Flash runoff from high limestone plateau above tunnel portals",
+      "Severe debris volume routinely inundating southern entrance"
+    ],
+    "suggested_action": "Emergency standby: Keep heavy earth-movers stationed on both sides of Sonapur tunnel 24x7.",
+    "weather_forecast": {
+      "temperature_c": 22.5,
+      "rainfall_24h_mm": 88.0,
+      "rainfall_7d_mm": 310.0,
+      "humidity_pct": 98,
+      "wind_speed_kmh": 20.0,
+      "condition": "Torrential Downpour"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Sonapur Highway Tunnel Portal"
+      ],
+      "power_lines": [
+        "Silchar-Shillong Transmission Corridor"
+      ],
+      "hospitals": [
+        "Khliehriat Civil Hospital (24km)"
+      ],
+      "telecom_towers": [
+        "BSNL Microwave Repeater"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2023",
+        "date": "16 June 2023",
+        "type": "Massive Mudflow",
+        "rainfall": "260 mm (24h)",
+        "damage": "Severed Barak Valley lifeline for 5 days",
+        "countermeasures": "Constructed reinforced concrete avalanche shed"
+      }
+    ]
+  },
+  {
+    "id": "VIL-047",
+    "name": "Tura Peak Escarpment",
+    "subdivision": "Tura",
+    "district": "West Garo Hills",
+    "state": "Meghalaya",
+    "lat": 25.5142,
+    "lon": 90.2215,
+    "elevation_m": 872,
+    "slope_deg": 44.8,
+    "rainfall_72h_mm": 225.0,
+    "soil_moisture_pct": 85.5,
+    "risk_score": 87,
+    "risk_percentage": 87.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Precipitous granite-gneiss hornblende fault scarp",
+      "Extreme squall precipitation over Garo hills crestline",
+      "Vulnerable settlement dwellings on lower talus terraces"
+    ],
+    "suggested_action": "Issue evacuation notices for downhill localities in Babupara and Ringrey.",
+    "weather_forecast": {
+      "temperature_c": 24.0,
+      "rainfall_24h_mm": 72.0,
+      "rainfall_7d_mm": 245.0,
+      "humidity_pct": 95,
+      "wind_speed_kmh": 17.0,
+      "condition": "Severe Monsoon Squall"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Rongram-Tura Access Bridge"
+      ],
+      "power_lines": [
+        "Tura 33kV Substation Feed"
+      ],
+      "hospitals": [
+        "Tura Civil Hospital (3km)"
+      ],
+      "telecom_towers": [
+        "Doordarshan / Telecom Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2020",
+        "date": "24 Sept 2020",
+        "type": "Debris Avalanche",
+        "rainfall": "210 mm",
+        "damage": "Destroyed 3 houses; 5 fatalities",
+        "countermeasures": "High-tensile rockfall barriers"
+      }
+    ]
+  },
+  {
+    "id": "VIL-048",
+    "name": "Baghmara Simsang Valley",
+    "subdivision": "Baghmara",
+    "district": "South Garo Hills",
+    "state": "Meghalaya",
+    "lat": 25.1952,
+    "lon": 90.6412,
+    "elevation_m": 115,
+    "slope_deg": 37.0,
+    "rainfall_72h_mm": 178.0,
+    "soil_moisture_pct": 75.0,
+    "risk_score": 75,
+    "risk_percentage": 75.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Simsang river flood water rising against steep shale banks",
+      "Saturated porous sandstone layers causing planar failure",
+      "Remoteness of district road network impeding quick repair"
+    ],
+    "suggested_action": "Pre-position rescue boats and earthmovers at Baghmara municipal yard.",
+    "weather_forecast": {
+      "temperature_c": 26.5,
+      "rainfall_24h_mm": 58.0,
+      "rainfall_7d_mm": 195.0,
+      "humidity_pct": 92,
+      "wind_speed_kmh": 14.0,
+      "condition": "Continuous Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Simsang RCC Bridge"
+      ],
+      "power_lines": [
+        "11kV Border Transmission Line"
+      ],
+      "hospitals": [
+        "Baghmara CHC (2km)"
+      ],
+      "telecom_towers": [
+        "Jio Cell Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2021",
+        "date": "18 July 2021",
+        "type": "Riverbank Slump",
+        "rainfall": "160 mm",
+        "damage": "Road washed out for 3 days",
+        "countermeasures": "Rip-rap boulder placement"
+      }
+    ]
+  },
+  {
+    "id": "VIL-049",
+    "name": "Chungthang Flash Flood Basin",
+    "subdivision": "Chungthang",
+    "district": "Mangan",
+    "state": "Sikkim",
+    "lat": 27.6032,
+    "lon": 88.6475,
+    "elevation_m": 1790,
+    "slope_deg": 46.5,
+    "rainfall_72h_mm": 235.0,
+    "soil_moisture_pct": 87.0,
+    "risk_score": 94,
+    "risk_percentage": 94.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Teesta-Lachen-Lachung confluence zone vulnerable to GLOF surges",
+      "Highly fractured gneissic bedrocks under glacial-fluvial erosion",
+      "Steep mountainous defiles vulnerable to catastrophic damming"
+    ],
+    "suggested_action": "Strict GLOF emergency warning: maintain round-the-clock Teesta river stage monitoring.",
+    "weather_forecast": {
+      "temperature_c": 14.0,
+      "rainfall_24h_mm": 78.0,
+      "rainfall_7d_mm": 275.0,
+      "humidity_pct": 95,
+      "wind_speed_kmh": 22.0,
+      "condition": "High Altitude Torrential Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Chungthang Bailey Suspension Bridge"
+      ],
+      "power_lines": [
+        "Teesta Urja 400kV Grid Link"
+      ],
+      "hospitals": [
+        "Chungthang ITBP Emergency Camp (1km)"
+      ],
+      "telecom_towers": [
+        "BSNL Satellite Terminal"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2023",
+        "date": "04 Oct 2023",
+        "type": "GLOF & Flash Flood Debris Flow",
+        "rainfall": "South Lhonak outburst + 180mm rain",
+        "damage": "Chungthang dam washed away; catastrophic loss",
+        "countermeasures": "Automated early warning water-level radar sensors installed"
+      }
+    ]
+  },
+  {
+    "id": "VIL-050",
+    "name": "Dikchu Hydro Slope",
+    "subdivision": "Mangan",
+    "district": "Mangan",
+    "state": "Sikkim",
+    "lat": 27.4125,
+    "lon": 88.5834,
+    "elevation_m": 680,
+    "slope_deg": 42.0,
+    "rainfall_72h_mm": 192.0,
+    "soil_moisture_pct": 78.5,
+    "risk_score": 83,
+    "risk_percentage": 83.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Steep mountain flank cut during hydro powerhouse work",
+      "Water table elevation in phyllite-schist geological matrix",
+      "Dikchu river flash surge undermining toe support"
+    ],
+    "suggested_action": "Close Dikchu-Singtam bypass during nighttime rain; inspect piezometer gauges.",
+    "weather_forecast": {
+      "temperature_c": 18.5,
+      "rainfall_24h_mm": 62.0,
+      "rainfall_7d_mm": 215.0,
+      "humidity_pct": 91,
+      "wind_speed_kmh": 16.0,
+      "condition": "Heavy Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Dikchu Hydro Penstock Bridge"
+      ],
+      "power_lines": [
+        "132kV State Transmission Line"
+      ],
+      "hospitals": [
+        "Mangan District Hospital (14km)"
+      ],
+      "telecom_towers": [
+        "Airtel 4G Pole"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2023",
+        "date": "05 Oct 2023",
+        "type": "Debris Avalanche",
+        "rainfall": "210 mm",
+        "damage": "Inundated powerhouse road access",
+        "countermeasures": "Anchored rockfall netting"
+      }
+    ]
+  },
+  {
+    "id": "VIL-051",
+    "name": "Samdruptse Slope",
+    "subdivision": "Namchi",
+    "district": "Namchi",
+    "state": "Sikkim",
+    "lat": 27.1685,
+    "lon": 88.3562,
+    "elevation_m": 1320,
+    "slope_deg": 38.0,
+    "rainfall_72h_mm": 154.0,
+    "soil_moisture_pct": 69.0,
+    "risk_score": 68,
+    "risk_percentage": 68.0,
+    "risk_band": "High",
+    "contributing_factors": [
+      "Steep ridge slope under moderate forest cover",
+      "Anthropogenic tourist road widening on southern incline",
+      "Monsoon saturation in loose mica-schist overburden"
+    ],
+    "suggested_action": "Monitor roadside retaining walls; clear drainage weep holes.",
+    "weather_forecast": {
+      "temperature_c": 21.0,
+      "rainfall_24h_mm": 45.0,
+      "rainfall_7d_mm": 165.0,
+      "humidity_pct": 87,
+      "wind_speed_kmh": 12.0,
+      "condition": "Intermittent Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Namchi Bypass RCC Culvert"
+      ],
+      "power_lines": [
+        "66kV Substation Line"
+      ],
+      "hospitals": [
+        "Namchi District Hospital (2km)"
+      ],
+      "telecom_towers": [
+        "Jio Cell Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2022",
+        "date": "15 June 2022",
+        "type": "Slump",
+        "rainfall": "140 mm",
+        "damage": "Partially blocked Samdruptse ropeway road",
+        "countermeasures": "Concrete crib walls"
+      }
+    ]
+  },
+  {
+    "id": "VIL-052",
+    "name": "Jorethang River Basin",
+    "subdivision": "Jorethang",
+    "district": "Namchi",
+    "state": "Sikkim",
+    "lat": 27.1274,
+    "lon": 88.3185,
+    "elevation_m": 330,
+    "slope_deg": 35.0,
+    "rainfall_72h_mm": 168.0,
+    "soil_moisture_pct": 73.0,
+    "risk_score": 71,
+    "risk_percentage": 71.0,
+    "risk_band": "High",
+    "contributing_factors": [
+      "Rangeet river tributary scour along highway foundation",
+      "Heavy commercial traffic vibrations weakening weathered phyllite",
+      "Dense urban settlement on unstable alluvial terrace"
+    ],
+    "suggested_action": "Inspect riverbank boulder spurs; restrict heavy freight during peak river discharge.",
+    "weather_forecast": {
+      "temperature_c": 25.0,
+      "rainfall_24h_mm": 48.0,
+      "rainfall_7d_mm": 175.0,
+      "humidity_pct": 89,
+      "wind_speed_kmh": 14.0,
+      "condition": "Showers"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Rangeet Bridge Jorethang"
+      ],
+      "power_lines": [
+        "South Sikkim Primary Substation"
+      ],
+      "hospitals": [
+        "Jorethang CHC (1km)"
+      ],
+      "telecom_towers": [
+        "BSNL Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2021",
+        "date": "29 July 2021",
+        "type": "Toe Erosion Slump",
+        "rainfall": "155 mm",
+        "damage": "Bridge approach damaged",
+        "countermeasures": "Heavy gabion mattressing"
+      }
+    ]
+  },
+  {
+    "id": "VIL-053",
+    "name": "Pelling Escarpment",
+    "subdivision": "Gyalshing",
+    "district": "Gyalshing",
+    "state": "Sikkim",
+    "lat": 27.3175,
+    "lon": 88.2384,
+    "elevation_m": 2150,
+    "slope_deg": 41.5,
+    "rainfall_72h_mm": 185.0,
+    "soil_moisture_pct": 76.5,
+    "risk_score": 77,
+    "risk_percentage": 77.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "High mountain cliff edge exposed to severe weather",
+      "Deep fissures in Darjeeling gneiss bedrock",
+      "Unregulated hotel construction on steep hillsides"
+    ],
+    "suggested_action": "Strict ban on slope excavation; stage clearing units along Gyalshing-Pelling road.",
+    "weather_forecast": {
+      "temperature_c": 15.5,
+      "rainfall_24h_mm": 58.0,
+      "rainfall_7d_mm": 205.0,
+      "humidity_pct": 93,
+      "wind_speed_kmh": 15.0,
+      "condition": "Heavy Clouds & Cold Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Pelling Helipad Road Bridge"
+      ],
+      "power_lines": [
+        "11kV Overhead Grid"
+      ],
+      "hospitals": [
+        "Gyalshing District Hospital (9km)"
+      ],
+      "telecom_towers": [
+        "Airtel 4G Cell"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2022",
+        "date": "17 June 2022",
+        "type": "Rockfall",
+        "rainfall": "175 mm",
+        "damage": "Tourists stranded for 24h",
+        "countermeasures": "Rock bolting & catch netting"
+      }
+    ]
+  },
+  {
+    "id": "VIL-054",
+    "name": "Pakyong Airport Cut Slope",
+    "subdivision": "Pakyong",
+    "district": "Pakyong",
+    "state": "Sikkim",
+    "lat": 27.2314,
+    "lon": 88.5862,
+    "elevation_m": 1395,
+    "slope_deg": 43.5,
+    "rainfall_72h_mm": 215.0,
+    "soil_moisture_pct": 83.0,
+    "risk_score": 86,
+    "risk_percentage": 86.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "High artificial reinforced soil fill embankment (over 70m height)",
+      "Heavy surface seepage along greenfield airstrip cutting",
+      "Continuous monsoon cloudbursts triggering pore pressure surge"
+    ],
+    "suggested_action": "Monitor inclinometer & piezometer sensors in real time; halt runway operations if threshold exceeded.",
+    "weather_forecast": {
+      "temperature_c": 19.0,
+      "rainfall_24h_mm": 70.0,
+      "rainfall_7d_mm": 235.0,
+      "humidity_pct": 95,
+      "wind_speed_kmh": 18.0,
+      "condition": "Dense Fog & Torrential Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Pakyong Airport Perimeter Road"
+      ],
+      "power_lines": [
+        "Dedicated 33kV Aviation Feeder"
+      ],
+      "hospitals": [
+        "Pakyong PHC (2km)"
+      ],
+      "telecom_towers": [
+        "Airports Authority Navigation Radar"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2020",
+        "date": "10 July 2020",
+        "type": "Embankment Slump",
+        "rainfall": "200 mm",
+        "damage": "Structural cracks in perimeter security wall",
+        "countermeasures": "Deep subsurface horizontal drainage boreholes"
+      }
+    ]
+  },
+  {
+    "id": "VIL-055",
+    "name": "Rangpo NH-10 Border Checkpoint",
+    "subdivision": "Pakyong",
+    "district": "Pakyong",
+    "state": "Sikkim",
+    "lat": 27.1764,
+    "lon": 88.5302,
+    "elevation_m": 340,
+    "slope_deg": 39.5,
+    "rainfall_72h_mm": 190.0,
+    "soil_moisture_pct": 77.0,
+    "risk_score": 80,
+    "risk_percentage": 80.0,
+    "risk_band": "Critical",
+    "contributing_factors": [
+      "Vital single economic lifeline road (NH-10) pinned between Teesta river and sheer cliff",
+      "Severe toe erosion during monsoon peak river swelling",
+      "Debris flows from tributary chutes choking the highway"
+    ],
+    "suggested_action": "Stage continuous SDRF & BRO bulldozers at Rangpo gate; enforce single-lane convoy protocol.",
+    "weather_forecast": {
+      "temperature_c": 24.5,
+      "rainfall_24h_mm": 64.0,
+      "rainfall_7d_mm": 210.0,
+      "humidity_pct": 92,
+      "wind_speed_kmh": 15.0,
+      "condition": "Heavy Rain"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Teesta Rangpo Border Bridge"
+      ],
+      "power_lines": [
+        "Interstate Transmission Line"
+      ],
+      "hospitals": [
+        "Rangpo Primary Health Centre (1km)"
+      ],
+      "telecom_towers": [
+        "BSNL / Airtel Mobile Hub"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2023",
+        "date": "04 Oct 2023",
+        "type": "Teesta Flash Flood Washout",
+        "rainfall": "GLOF flood wave",
+        "damage": "NH-10 submerged and severed for weeks",
+        "countermeasures": "Constructing elevated reinforced bypass viaduct"
+      }
+    ]
+  },
+  {
+    "id": "VIL-056",
+    "name": "Chakung Ridge",
+    "subdivision": "Soreng",
+    "district": "Soreng",
+    "state": "Sikkim",
+    "lat": 27.1425,
+    "lon": 88.2564,
+    "elevation_m": 1490,
+    "slope_deg": 36.5,
+    "rainfall_72h_mm": 148.0,
+    "soil_moisture_pct": 67.0,
+    "risk_score": 63,
+    "risk_percentage": 63.0,
+    "risk_band": "High",
+    "contributing_factors": [
+      "Steep terraced agricultural slopes prone to saturation",
+      "Unretained village link roads cut into weathered phyllite",
+      "Absence of concrete roadside stormwater channels"
+    ],
+    "suggested_action": "Clear roadside culverts and advise hillside habitations to monitor ground tension cracks.",
+    "weather_forecast": {
+      "temperature_c": 20.0,
+      "rainfall_24h_mm": 40.0,
+      "rainfall_7d_mm": 150.0,
+      "humidity_pct": 88,
+      "wind_speed_kmh": 11.0,
+      "condition": "Passing Showers"
+    },
+    "infrastructure_at_risk": {
+      "bridges": [
+        "Soreng-Chakung Link Bridge"
+      ],
+      "power_lines": [
+        "Local 11kV Feeder"
+      ],
+      "hospitals": [
+        "Soreng CHC (5km)"
+      ],
+      "telecom_towers": [
+        "Jio Cell Tower"
+      ]
+    },
+    "historical_landslides": [
+      {
+        "year": "2021",
+        "date": "14 Aug 2021",
+        "type": "Agricultural Slope Slump",
+        "rainfall": "135 mm",
+        "damage": "Damaged 4 farming terraces",
+        "countermeasures": "Bamboo revetment walls"
+      }
+    ]
   }
 ]

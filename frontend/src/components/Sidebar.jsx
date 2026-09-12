@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { authService } from '../firebase/authService';
+import { useDistrict } from '../context/DistrictContext';
 import {
   MapPin,
   ListFilter,
@@ -16,7 +17,9 @@ import {
 export default function Sidebar() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const officer = authService.getCurrentOfficer() || {
+  const { currentOfficer, logoutOfficer } = useDistrict();
+
+  const officer = currentOfficer || {
     name: 'Demo Officer',
     role: 'Emergency Response Officer',
     jurisdiction: 'Dima Hasao',
@@ -33,7 +36,7 @@ export default function Sidebar() {
   ];
 
   const handleLogout = () => {
-    authService.logout();
+    logoutOfficer();
     navigate('/officer/login');
   };
 

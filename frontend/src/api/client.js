@@ -61,9 +61,12 @@ export const apiClient = {
     }
   },
 
-  async fetchDistrictSummary() {
+  async fetchDistrictSummary(state = "ALL", district = "ALL") {
     try {
-      const res = await fetch(`${API_BASE}/analytics/district-summary`);
+      const q = new URLSearchParams();
+      if (state && state !== "ALL") q.append("state", state);
+      if (district && district !== "ALL") q.append("district", district);
+      const res = await fetch(`${API_BASE}/analytics/district-summary?${q.toString()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       localStorage.setItem(CACHE_KEYS.SUMMARY, JSON.stringify(data));
@@ -74,6 +77,35 @@ export const apiClient = {
         return { data: JSON.parse(cached), fromCache: true };
       }
       throw err;
+    }
+  },
+
+  async fetchWeather11Day(state = "Assam", district = "Dima Hasao") {
+    try {
+      const q = new URLSearchParams();
+      if (state && state !== "ALL") q.append("state", state);
+      if (district && district !== "ALL") q.append("district", district);
+      const res = await fetch(`${API_BASE}/analytics/weather-11day?${q.toString()}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn("11-day weather fetch failed:", err);
+      return null;
+    }
+  },
+
+  async chatWithAssistant(message, language = "en", history = []) {
+    try {
+      const res = await fetch(`${API_BASE}/chatbot/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, language, history })
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn("Chatbot API request failed:", err);
+      return null;
     }
   },
 

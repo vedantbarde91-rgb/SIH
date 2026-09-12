@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { authService, DEMO_OFFICERS } from '../../firebase/authService';
+import { useDistrict } from '../../context/DistrictContext';
 import {
   Shield,
   Lock,
@@ -14,6 +15,7 @@ import {
 export default function OfficerLogin() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { loginOfficer } = useDistrict();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +28,7 @@ export default function OfficerLogin() {
     setIsLoading(true);
 
     try {
-      await authService.login(email, password);
+      await loginOfficer(email, password);
       navigate('/officer/map');
     } catch (err) {
       setErrorMsg(err.message || 'Authentication error');
@@ -41,7 +43,7 @@ export default function OfficerLogin() {
     setPassword(demo.password);
     setIsLoading(true);
     try {
-      await authService.login(demo.email, demo.password);
+      await loginOfficer(demo.email, demo.password);
       navigate('/officer/map');
     } catch (err) {
       setErrorMsg(err.message);

@@ -21,14 +21,15 @@ export default function Navbar() {
     availableDistricts,
     isSuperAdmin,
     officerAssignedDistrict,
-    currentOfficer
+    currentOfficer,
+    logoutOfficer
   } = useDistrict();
 
   const isOfficerRoute = location.pathname.startsWith('/officer') && location.pathname !== '/officer/login';
 
   const handleLogout = () => {
-    authService.logout();
-    navigate('/');
+    logoutOfficer();
+    navigate('/officer/login');
   };
 
   return (
@@ -130,10 +131,14 @@ export default function Navbar() {
           </div>
         ) : (
           /* Emergency Helpline for Citizen Portal */
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-300 text-xs font-medium">
+          <a
+            href="tel:112"
+            className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-600 dark:text-rose-300 text-xs font-bold transition"
+            title="Call National Emergency Helpline 112"
+          >
             <PhoneCall className="w-3.5 h-3.5 animate-pulse text-rose-500" />
-            <span>{t('app.emergency_hotline', 'State Emergency: 1070 / 1077')}</span>
-          </div>
+            <span>{t('app.emergency_hotline', 'Emergency Helpline: 112')}</span>
+          </a>
         )}
 
         {/* Action Controls */}

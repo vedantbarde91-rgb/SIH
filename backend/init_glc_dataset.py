@@ -126,7 +126,7 @@ HISTORICAL_LANDSLIDES = [
         "susceptibility_zone": "High"
     },
     {
-        "id": "GLC-NER-2024-05-28",
+        "id": "GLC-NER-2024-05-28-MAIBANG",
         "title": "Maibang Deforested Slope Mudflow",
         "date": "2024-05-28",
         "state": "Assam",
@@ -476,7 +476,7 @@ HISTORICAL_LANDSLIDES = [
 
     # --- MIZORAM ---
     {
-        "id": "GLC-NER-2024-05-28",
+        "id": "GLC-NER-2024-05-28-AIZAWL",
         "title": "Aizawl Melthum Stone Quarry & Hill Slope Collapse",
         "date": "2024-05-28",
         "state": "Mizoram",

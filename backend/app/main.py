@@ -1,3 +1,10 @@
+import os
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers.villages import router as villages_router
@@ -6,6 +13,8 @@ from app.routers.reports import router as reports_router
 from app.routers.weather import router as weather_router
 from app.routers.terrain import router as terrain_router
 from app.routers.historical import router as historical_router
+from app.routers.chatbot import router as chatbot_router
+from app.routers.bhuvan_proxy import router as bhuvan_router
 
 app = FastAPI(
     title="NER Landslide Early Warning System (LEWS) API",
@@ -41,6 +50,8 @@ app.include_router(reports_router, prefix="/api")
 app.include_router(weather_router, prefix="/api")
 app.include_router(terrain_router, prefix="/api")
 app.include_router(historical_router, prefix="/api")
+app.include_router(chatbot_router, prefix="/api")
+app.include_router(bhuvan_router, prefix="/api")
 
 @app.get("/", tags=["System"])
 def root():

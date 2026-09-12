@@ -143,10 +143,10 @@ export default function Landing() {
             Smart India Hackathon Prototype • AI Landslide Early Warning & Dissemination Platform
           </p>
           <div className="flex items-center gap-4">
-            <span>Dima Hasao, Kamrup, East Khasi Hills, Ri-Bhoi</span>
+            <span>Assam • Meghalaya • Sikkim (NER Pilot Corridors)</span>
             <span>•</span>
-            <a href="http://localhost:8000/docs" target="_blank" rel="noreferrer" className="hover:text-sky-500 underline">
-              FastAPI Docs
+            <a href="tel:112" className="text-rose-600 dark:text-rose-400 font-bold hover:underline flex items-center gap-1">
+              <span>National Emergency Helpline: 112</span>
             </a>
           </div>
         </div>
