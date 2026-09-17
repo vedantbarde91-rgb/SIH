@@ -16,28 +16,28 @@ from app.routers.historical import router as historical_router
 from app.routers.chatbot import router as chatbot_router
 from app.routers.bhuvan_proxy import router as bhuvan_router
 
+# Initialize FastAPI with Swagger and ReDoc documentation disabled
 app = FastAPI(
     title="NER Landslide Early Warning System (LEWS) API",
-    description="""
-    ## Smart India Hackathon Prototype: AI-Based Early Warning & Landslide Risk Monitoring Engine
-    
-    ### Scope: Dima Hasao, East Khasi Hills & Gangtok Pilot Corridors (North Eastern Region)
-    - **Villages & Geotechnical Telemetry**: Monitored settlements with real-time risk scores, slope angles, antecedent rainfall, and soil moisture saturation.
-    - **Open-Meteo Live APIs**: High-resolution live weather, 72h antecedent rainfall, soil moisture, and river discharge for flash flood detection.
-    - **Open-Meteo Elevation Grid**: Live topographic slope gradient and elevation calculation.
-    - **NASA GLC Historical Landslides**: Real GeoJSON catalog of recorded disaster events across NER.
-    - **ISRO Bhuvan GIS Layers**: WMS integration for LULC, Landslide Hazard Zonation, and Flood Inundation.
-    - **Crowdsourced Hazard Reports**: Citizen field submissions (geotagged cracks, rockfalls, mudflows).
-    """,
+    description="AI-Based Early Warning & Landslide Risk Monitoring Engine for North Eastern Region",
     version="2.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc"
+    docs_url=None,       # Disables /docs (Swagger UI)
+    redoc_url=None,      # Disables /redoc
+    openapi_url=None     # Completely disables OpenAPI schema endpoint
 )
 
-# Enable CORS for frontend Vite development
+# Allowed frontend origins (Netlify production + local development)
+origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://ner-earlywarningpredict.netlify.app",
+]
+
+# Configure CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
+    allow_origin_regex=r"https://.*\.netlify\.app",  # Permits all Netlify preview deploys
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -59,7 +59,6 @@ def root():
         "service": "NER Landslide Early Warning Risk Engine",
         "status": "operational",
         "district": "Dima Hasao, Assam",
-        "interactive_docs": "/docs",
         "api_endpoints": {
             "villages": "/api/villages",
             "village_live_risk": "/api/villages/{village_id}/live-risk",
@@ -79,4 +78,6 @@ def health():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    # Pull dynamic port assigned by Render or default to 8000 for local run
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port, reload=False)
