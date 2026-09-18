@@ -1,4 +1,5 @@
-const API_BASE = "http://localhost:8000/api";
+//const API_BASE = "http://localhost:8000/api";
+const API_URL = "https://sih-1-z04k.onrender.com";
 
 const CACHE_KEYS = {
   VILLAGES: "ner_lews_cached_villages",
