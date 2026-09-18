@@ -5,7 +5,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { authService } from '../firebase/authService';
 import { useTheme } from '../context/ThemeContext';
 import { useDistrict } from '../context/DistrictContext';
-import { Mountain, PhoneCall, Shield, LogOut, Sun, Moon, Lock } from 'lucide-react';
+import { Mountain, PhoneCall, LogOut, Sun, Moon, Lock } from 'lucide-react';
 
 export default function Navbar() {
   const { t } = useTranslation();
@@ -172,15 +172,6 @@ export default function Navbar() {
             </button>
           )}
 
-          {currentOfficer && !isOfficerRoute && (
-            <Link
-              to="/officer/map"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium shadow-sm transition"
-            >
-              <Shield className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Operations Hub</span>
-            </Link>
-          )}
         </div>
       </div>
     </header>
